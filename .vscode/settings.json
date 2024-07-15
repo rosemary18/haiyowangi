@@ -1,0 +1,4 @@
+{
+    "dart.enableSdkFormatter": false,
+    "cmake.configureOnOpen": false
+}
