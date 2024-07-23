@@ -25,6 +25,11 @@ final GoRouter router = GoRouter(
             name: appRoutes.dashboard.name,
             pageBuilder: renderFadeTransition(const DashboardView())
           ),
+          GoRoute(
+            path: appRoutes.notification.path,
+            name: appRoutes.notification.name,
+            pageBuilder: renderFadeTransition(const PlaceholderView())
+          ),
         ],
     ),
   ]

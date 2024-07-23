@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:haiyowangi/src/index.dart';
+import 'drawer.route.dart';
 
 class DrawerApp extends StatefulWidget {
   const DrawerApp({super.key});
@@ -24,8 +26,36 @@ class _DrawerAppState extends State<DrawerApp> {
     context.read<AuthBloc>().add(AuthLogout());
   }
 
+  Widget buildMenuItem(BuildContext context, r) {
+
+    return TouchableOpacity(
+      onPress: () {
+        Navigator.pop(context);
+        context.go(r?.routePath);
+      },
+      child: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 6),
+        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 6),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            const Icon(Icons.close, color: blackColor),
+            Expanded(
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8),
+                child: Text("${r?.title!}"),
+              )
+            ),
+            if (r is IDRouteGroup) const Icon(Icons.arrow_drop_down_outlined, color: greyDarkColor)
+          ],
+        )
+      ), 
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    // debugPrint(drawerRoutes);
     return Scaffold(
       body: Container(
         color: Colors.white,
@@ -128,6 +158,39 @@ class _DrawerAppState extends State<DrawerApp> {
 
                   ],
                 ),
+              ),
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(vertical: 12),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        TouchableOpacity(
+                          onPress: () {
+                          },
+                          child: Container(
+                            margin: const EdgeInsets.only(left: 6, right: 6, top: 6),
+                            padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 6),
+                            child: const Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Text("Semua Toko"),
+                                Text("12"),
+                              ],
+                            )
+                          ), 
+                        ),
+                        const Padding(
+                          padding: EdgeInsets.symmetric(vertical: 8),
+                          child: Divider(color: greyLightColor, height: 1, indent: 12, endIndent: 12),
+                        ),
+                        for (final r in drawerRoutes.routes) buildMenuItem(context, r)
+                      ],
+                    ),
+                  ),
+                )
               )
             ],
           )

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:haiyowangi/src/index.dart';
 
 class DashboardHeader extends StatelessWidget implements PreferredSizeWidget {
@@ -47,7 +48,7 @@ class DashboardHeader extends StatelessWidget implements PreferredSizeWidget {
             child: Row(
               children: [
                 TouchableOpacity(
-                  onPress: () {},
+                  onPress: () => context.pushNamed(appRoutes.notification.name),
                   child: const Icon(
                     Icons.notifications,  
                     color: Colors.white,
