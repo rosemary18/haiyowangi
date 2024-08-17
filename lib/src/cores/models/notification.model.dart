@@ -1,14 +1,14 @@
-class Notification {
+class NotificationModel {
 
   final int id;
   final String? title;
   final String? message;
-  final bool? isRead;
+  bool? isRead;
   final int? storeId;
   final String? createdAt;
   final String? updatedAt;
 
-  Notification({
+  NotificationModel({
     required this.id,
     this.title = "",
     this.message = "",
@@ -18,8 +18,8 @@ class Notification {
     this.updatedAt = "",
   });
 
-  factory Notification.fromJson(Map<String, dynamic> json) {
-    return Notification(
+  factory NotificationModel.fromJson(Map<String, dynamic> json) {
+    return NotificationModel(
       id: json["id"],
       title: json["title"] ?? "",
       message: json["message"] ?? "",

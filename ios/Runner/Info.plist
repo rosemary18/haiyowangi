@@ -34,6 +34,12 @@
 	<string>Main</string>
 	<key>UIStatusBarHidden</key>
 	<false/>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>App needs photo library Access for Pick Image.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>App needs photo library Access to allow users change their display picture</string>
+	<key>NSCameraUsageDescription</key>
+	<string>App needs Camera Access Permission for Pick Image, and for use scanning barcode provide by Zenwel Biz to get Device Code</string>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>

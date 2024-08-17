@@ -1,4 +1,4 @@
-class Product {
+class ProductModel {
 
   final int id;
   final String name;
@@ -14,7 +14,7 @@ class Product {
   final String? createdAt;
   final String? updatedAt;
 
-  Product({
+  ProductModel({
     required this.id,
     required this.name,
     this.img = "",
@@ -30,8 +30,8 @@ class Product {
     this.updatedAt = "",
   });
 
-  factory Product.fromJson(Map<String, dynamic> json) {
-    return Product(
+  factory ProductModel.fromJson(Map<String, dynamic> json) {
+    return ProductModel(
       id: json["id"],
       name: json["name"] ?? "",
       img: json["img"] ?? "",

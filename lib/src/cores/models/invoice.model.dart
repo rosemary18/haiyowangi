@@ -1,4 +1,4 @@
-class Invoice {
+class InvoiceModel {
 
   final int id;
   final String? code;
@@ -13,7 +13,7 @@ class Invoice {
   final String? createdAt;
   final String? updatedAt;
 
-  Invoice({
+  InvoiceModel({
     required this.id,
     this.code = "",
     this.salesId,
@@ -28,8 +28,8 @@ class Invoice {
     this.updatedAt = "",
   });
 
-  factory Invoice.fromJson(Map<String, dynamic> json) {
-    return Invoice(
+  factory InvoiceModel.fromJson(Map<String, dynamic> json) {
+    return InvoiceModel(
       id: json["id"],
       code: json["code"] ?? "",
       salesId: json["sales_id"],

@@ -1,4 +1,4 @@
-class SaleItem {
+class SaleItemModel {
 
   final int id;
   final int? salesId;
@@ -8,7 +8,7 @@ class SaleItem {
   final int? packetId;
   final String? createdAt;
 
-  SaleItem({
+  SaleItemModel({
     required this.id,
     this.salesId,
     this.qty = 0,
@@ -18,8 +18,8 @@ class SaleItem {
     this.createdAt = "",
   });
 
-  factory SaleItem.fromJson(Map<String, dynamic> json) {
-    return SaleItem(
+  factory SaleItemModel.fromJson(Map<String, dynamic> json) {
+    return SaleItemModel(
       id: json["id"],
       salesId: json["sales_id"],
       qty: json["qty"] ?? 0,

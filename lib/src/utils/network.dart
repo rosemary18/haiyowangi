@@ -3,10 +3,35 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import '../types/index.dart';
 import 'unauthorized.dart';
 
-final dio = Dio(BaseOptions(
+class LoggingInterceptor extends Interceptor {
+  @override
+  void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
+    debugPrint('[${options.method}]: ${options.uri}');
+    debugPrint('Headers: ${options.headers}');
+    debugPrint('Data: ${options.data}');
+    super.onRequest(options, handler);
+  }
+
+  @override
+  void onResponse(Response response, ResponseInterceptorHandler handler) {
+    debugPrint('[RES CODE]: ${response.statusCode}');
+    debugPrint('Data: ${response.data}');
+    super.onResponse(response, handler);
+  }
+
+  @override
+  void onError(DioException err, ErrorInterceptorHandler handler) {
+    debugPrint('[FETCH ERROR]: ${err.error}');
+    debugPrint('Error Message: ${err.message}');
+    debugPrint('Response: ${err.response}');
+    super.onError(err, handler);
+  }
+}
+
+final dio = Dio(
+  BaseOptions(
     baseUrl: '${dotenv.env['BASE_PRODUCTION_API']!}/api',
     connectTimeout: const Duration(seconds: 10),
     receiveTimeout: const Duration(seconds: 10),
@@ -15,7 +40,8 @@ final dio = Dio(BaseOptions(
       // Tambahkan header lainnya jika diperlukan
     },
     validateStatus: (status) => true
-  ));
+  )
+)..interceptors.add(LoggingInterceptor());
 
 Future<Response> getFetch(String path, { 
     Object? data, 
@@ -35,7 +61,7 @@ Future<Response> getFetch(String path, {
       cancelToken: cancelToken,
       onReceiveProgress: onReceiveProgress
     );
-    if (response.statusCode == 401 && IS_POS) unAuthorizing();
+    if (response.statusCode == 401) unAuthorizing();
     return response;
   } on HttpException {
     RequestOptions requestOptions = RequestOptions(path: path);
@@ -71,7 +97,7 @@ Future<Response> postFetch(String path, {
       cancelToken: cancelToken,
       onReceiveProgress: onReceiveProgress
     );
-    if (response.statusCode == 401 && IS_POS) unAuthorizing();
+    if (response.statusCode == 401) unAuthorizing();
     return response;
   } on HttpException {
     RequestOptions requestOptions = RequestOptions(path: path);
@@ -82,9 +108,8 @@ Future<Response> postFetch(String path, {
     response = Response(statusCode: 101, statusMessage: "Format Exception", requestOptions: requestOptions); 
     return response;
   } catch (e) {
-    debugPrint(e.toString());
     RequestOptions requestOptions = RequestOptions(path: path);
-    response = Response(statusCode: 102, statusMessage: "Unknown Error", requestOptions: requestOptions); 
+    response = Response(statusCode: 102, statusMessage: "Unknown Error", requestOptions: requestOptions);
     return response;
   }
 }
@@ -109,7 +134,7 @@ Future<Response> putFetch(String path, {
       onSendProgress: onSendProgress,
       onReceiveProgress: onReceiveProgress
     );
-    if (response.statusCode == 401 && IS_POS) unAuthorizing();
+    if (response.statusCode == 401) unAuthorizing();
     return response;
   } on HttpException {
     RequestOptions requestOptions = RequestOptions(path: path);
@@ -142,7 +167,7 @@ Future<Response> delFetch(String path, {
       options: options,
       cancelToken: cancelToken
     );
-    if (response.statusCode == 401 && IS_POS) unAuthorizing();
+    if (response.statusCode == 401) unAuthorizing();
     return response;
   } on HttpException {
     RequestOptions requestOptions = RequestOptions(path: path);

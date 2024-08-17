@@ -1,4 +1,4 @@
-class Unit {
+class UnitModel {
 
   final int id;
   final String? name;
@@ -7,7 +7,7 @@ class Unit {
   final double conversion_factor_to_base;
   final String? createdAt;
 
-  Unit({
+  UnitModel({
     required this.id,
     this.name = "",
     this.symbol = "",
@@ -16,8 +16,8 @@ class Unit {
     this.createdAt = "",
   });
 
-  factory Unit.fromJson(Map<String, dynamic> json) {
-    return Unit(
+  factory UnitModel.fromJson(Map<String, dynamic> json) {
+    return UnitModel(
       id: json["id"],
       name: json["name"] ?? "",
       symbol: json["symbol"] ?? "",

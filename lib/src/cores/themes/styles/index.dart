@@ -42,3 +42,10 @@ const Color redColor = Color(0xFFF5295A);
 const Color redLightColor = Color(0xFFFEE5EB);
 const Color yellowColor = Color(0xFFF59700);
 const Color yellowLightColor = Color(0xFFFEF2E0);
+const Color greenLightColor = Color(0xFFDDFBF3);
+
+const String FontRegular = "BentonSans-Regular";
+const String FontMedium = "BentonSans-Medium";
+const String FontThin = "BentonSans-Thin";
+const String FontBold = "BentonSans-Bold";
+const String FontBlack = "BentonSans-Black";

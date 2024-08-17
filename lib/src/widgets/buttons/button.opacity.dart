@@ -40,6 +40,7 @@ class ButtonOpacity extends StatelessWidget {
         decoration: BoxDecoration(
           color: disabled ? greyLightColor : backgroundColor,
           borderRadius: BorderRadius.circular(4.0),
+          boxShadow: const [BoxShadow(color: Color.fromARGB(24, 0, 0, 0), spreadRadius: 1, blurRadius: 1, offset: Offset(1.2, 1.2))]
         ),
         child: content ?? Center(
           child: Text(

@@ -1,6 +1,6 @@
 import 'user.model.dart';
 
-class Store {
+class StoreModel {
 
   final int id;
   final String? name;
@@ -9,11 +9,11 @@ class Store {
   final bool isActive;
   final String? lastSync;
   final int? ownerId;
-  final User? owner;
+  final UserModel? owner;
   final String? createdAt;
   final String? updatedAt;
 
-  Store({
+  StoreModel({
     required this.id,
     this.name = "",
     this.address = "",
@@ -26,8 +26,8 @@ class Store {
     this.updatedAt = "",
   });
 
-  factory Store.fromJson(Map<String, dynamic> json) {
-    return Store(
+  factory StoreModel.fromJson(Map<String, dynamic> json) {
+    return StoreModel(
       id: json["id"],
       name: json["name"] ?? "",
       address: json["address"] ?? "",
@@ -35,7 +35,7 @@ class Store {
       isActive: json["is_active"] ?? false,
       lastSync: json["last_sync"] ?? "",
       ownerId: json["owner_id"],
-      owner: json["owner"] != null ? User.fromJson(json["owner"]) : null,
+      owner: json["owner"] != null ?  UserModel.fromJson(json["owner"]) : null,
       createdAt: json["created_at"] ?? "",
       updatedAt: json["updated_at"] ?? "",
     );

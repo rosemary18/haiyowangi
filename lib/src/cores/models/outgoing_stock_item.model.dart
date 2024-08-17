@@ -1,4 +1,4 @@
-class OutgoingStockItem {
+class OutgoingStockItemModel {
   
   final int id;
   final int? outgoingStockId;
@@ -8,7 +8,7 @@ class OutgoingStockItem {
   final String? createdAt;
   final String? updatedAt;
 
-  OutgoingStockItem({
+  OutgoingStockItemModel({
     required this.id,
     this.outgoingStockId,
     this.productId,
@@ -18,8 +18,8 @@ class OutgoingStockItem {
     this.updatedAt = "",
   });
 
-  factory OutgoingStockItem.fromJson(Map<String, dynamic> json) {
-    return OutgoingStockItem(
+  factory OutgoingStockItemModel.fromJson(Map<String, dynamic> json) {
+    return OutgoingStockItemModel(
       id: json["id"],
       outgoingStockId: json["outgoing_stock_id"],
       productId: json["product_id"],

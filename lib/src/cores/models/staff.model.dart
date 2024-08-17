@@ -1,4 +1,4 @@
-class Staff {
+class StaffModel {
 
   final int id;
   final String? code;
@@ -9,14 +9,14 @@ class Staff {
   final String? address;
   final String? dateJoined;
   final int? status;
-  final double? salary;
+  final int? salary;
   final String? posPasscode;
   final bool? isCashier;
   final int? storeId;
   final String? createdAt;
   final String? updatedAt;
 
-  Staff({
+  StaffModel({
     required this.id,
     this.code = "",
     this.name = "",
@@ -34,8 +34,8 @@ class Staff {
     this.updatedAt = "",
   });
 
-  factory Staff.fromJson(Map<String, dynamic> json) {
-    return Staff(
+  factory StaffModel.fromJson(Map<String, dynamic> json) {
+    return StaffModel(
       id: json["id"],
       code: json["code"] ?? "",
       name: json["name"] ?? "",

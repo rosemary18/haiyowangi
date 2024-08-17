@@ -1,4 +1,4 @@
-class IncomingStock {
+class IncomingStockModel {
 
   final int id;
   final String? code;
@@ -9,7 +9,7 @@ class IncomingStock {
   final String? createdAt;
   final String? updatedAt;
 
-  IncomingStock({
+  IncomingStockModel({
     required this.id,
     this.code = "",
     this.name = "",
@@ -20,8 +20,8 @@ class IncomingStock {
     this.updatedAt = "",
   });
 
-  factory IncomingStock.fromJson(Map<String, dynamic> json) {
-    return IncomingStock(
+  factory IncomingStockModel.fromJson(Map<String, dynamic> json) {
+    return IncomingStockModel(
       id: json["id"],
       code: json["code"] ?? "",
       name: json["name"] ?? "",

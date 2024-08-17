@@ -1,4 +1,4 @@
-class IngredientItem {
+class IngredientItemModel {
 
   final int id;
   final int? productId;
@@ -9,7 +9,7 @@ class IngredientItem {
   final String? createdAt;
   final String? updatedAt;
 
-  IngredientItem({
+  IngredientItemModel({
     required this.id,
     this.productId,
     this.variantId,
@@ -20,8 +20,8 @@ class IngredientItem {
     this.updatedAt = "",
   });
 
-  factory IngredientItem.fromJson(Map<String, dynamic> json) {
-    return IngredientItem(
+  factory IngredientItemModel.fromJson(Map<String, dynamic> json) {
+    return IngredientItemModel(
       id: json["id"],
       productId: json["product_id"],
       variantId: json["variant_id"],

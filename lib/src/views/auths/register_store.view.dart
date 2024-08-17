@@ -38,7 +38,7 @@ class _RegisterStoreViewState extends State<RegisterStoreView> {
     final data = {
       "name": _nameController.text,
       "address": _addressController.text,
-      "phone": _phoneController.text
+      "phone": _phoneController.text.replaceAll("-", "")
     };
 
     final response = await _storeRepo.createStore(jsonEncode(data));
@@ -49,6 +49,7 @@ class _RegisterStoreViewState extends State<RegisterStoreView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const FormHeader(title: "Tambah Toko"),
+      backgroundColor: Colors.white,
       body: SafeArea(
         child: Container(
           color: Colors.white,
@@ -95,7 +96,7 @@ class _RegisterStoreViewState extends State<RegisterStoreView> {
                       child: ButtonOpacity(
                         text: "Batal",
                         margin: const EdgeInsets.only(right: 6),
-                        backgroundColor: greyColor,
+                        backgroundColor: Colors.white,
                         textColor: blackColor,
                         onPress: () => Navigator.pop(context),
                       )

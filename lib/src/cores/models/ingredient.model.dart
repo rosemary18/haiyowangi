@@ -1,4 +1,4 @@
-class Ingredient {
+class IngredientModel {
   
   final int id;
   final String? name;
@@ -9,7 +9,7 @@ class Ingredient {
   final String? createdAt;
   final String? updatedAt;
 
-  Ingredient({
+  IngredientModel({
     required this.id,
     this.name = "",
     this.img = "",
@@ -20,8 +20,8 @@ class Ingredient {
     this.updatedAt = "",
   });
 
-  factory Ingredient.fromJson(Map<String, dynamic> json) {
-    return Ingredient(
+  factory IngredientModel.fromJson(Map<String, dynamic> json) {
+    return IngredientModel(
       id: json["id"],
       name: json["name"] ?? "",
       img: json["img"] ?? "",

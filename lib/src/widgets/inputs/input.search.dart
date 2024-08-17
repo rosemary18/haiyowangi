@@ -58,7 +58,7 @@ class _InputSearchState extends State<InputSearch> {
 
     return Container(
       margin: widget.margin,
-      height: 40,
+      height: 38,
       child: TextField(
         controller: widget.controller,
         onChanged: handlerChange,
@@ -66,12 +66,12 @@ class _InputSearchState extends State<InputSearch> {
         cursorColor: const Color.fromARGB(255, 55, 98, 218),
         enabled: widget.enabled,
         decoration: InputDecoration(
-          prefixIcon: const Icon(IconlyLight.search, size: 16, color: Color(0xFF767676)),
-          prefixIconConstraints: const BoxConstraints.expand(width: 40, height: 40),
-          contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
+          prefixIcon: const Icon(IconlyLight.search, size: 14, color: Color(0xFF767676)),
+          prefixIconConstraints: const BoxConstraints.expand(width: 38, height: 38),
+          contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
           hintText: widget.placeholder,
-          hintStyle: const TextStyle(color: Color(0xFF767676)),
-          fillColor: const Color(0xFFEEEEEE),
+          hintStyle: const TextStyle(color: greyTextColor),
+          fillColor: greyColor,
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(100),
             borderSide: const BorderSide(width: 0, style: BorderStyle.none),
@@ -93,12 +93,13 @@ class _InputSearchState extends State<InputSearch> {
               widget.controller?.clear();
               handlerChange("");
             },
-            child: const Icon(Icons.close, size: 16, color: Color(0xFF767676))
-          ) : null
+            child: const Icon(Icons.close, size: 14, color: Color(0xFF767676))
+          ) : null,
         ),
         style: widget.textStyle,
         maxLength: widget.maxCharacter,
-        maxLengthEnforcement: MaxLengthEnforcement.enforced
+        maxLengthEnforcement: MaxLengthEnforcement.enforced,
+        textAlignVertical: TextAlignVertical.center,
       ),
     );
   }

@@ -13,6 +13,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final AuthRepository authRepository = AuthRepository();
   final UserRepository userRepository = UserRepository();
   final StoreRepository storeRepository = StoreRepository();
+  final NotificationRepository notificationRepository = NotificationRepository();
 
   AuthBloc() : super(AuthState()) {
 
@@ -26,6 +27,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       }
       emit(AuthLoading());
       await authRepository.login(email: event.email, password: event.password).then((value) {
+        state.isAuthenticated = false;
         if (value.statusCode == 200) {
           final data = value.data["data"];
           final box = Hive.box("storage");
@@ -34,7 +36,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             state.copyWith(
               isAuthenticated: true, 
               token: data["token"], 
-              user: User.fromJson(data)
+              user:  UserModel.fromJson(data)
             )
           );
           dio.interceptors.add(
@@ -69,6 +71,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       }
 
       await authRepository.refreshToken().then((response) async {
+
         if (response.statusCode == 200) {
 
           final data = response.data["data"];
@@ -86,20 +89,23 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           );
 
           await userRepository.getUser("${data["user_id"]}").then((res) async {
-            debugPrint(res.toString());
             if (res.statusCode == 200) {
               final dataUser = res.data["data"];
-              await storeRepository.getStore("$storeId").then((res2) {
+              await storeRepository.getStore("$storeId").then((res2) async {
                 if (res2.statusCode == 200) {
                   final dataStore = res2.data["data"];
                   box.put("store_id", dataStore["id"]);
+                  var res = await notificationRepository.getNotifications("${dataStore["id"]}");
+                  if (res.statusCode == 200) {
+                    state.unreadNotification = res.data!["data"]!["unread"];
+                  }
                   GoRouter.of(rootNavigatorKey.currentContext!).goNamed(appRoutes.dashboard.name);
                   emit(
                     state.copyWith(
                       isAuthenticated: true, 
                       token: data["token"],
-                      user: User.fromJson(dataUser),
-                      store: Store.fromJson(dataStore)
+                      user:  UserModel.fromJson(dataUser),
+                      store: StoreModel.fromJson(dataStore)
                     )
                   );
                 }
@@ -111,6 +117,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         if (response.statusCode! >= 400 && response.statusCode! < 500) {
           box.delete("refresh_token");
           box.delete("store_id");
+          emit(
+            state.copyWith(
+              isAuthenticated: false,
+            )
+          );
         }
 
       }).whenComplete(() => emit(state.copyWith()));

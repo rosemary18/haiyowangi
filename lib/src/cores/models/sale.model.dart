@@ -1,4 +1,4 @@
-class Sale {
+class SaleModel {
 
   final int id;
   final String? code;
@@ -11,7 +11,7 @@ class Sale {
   final String? createdAt;
   final String? updatedAt;
 
-  Sale({
+  SaleModel({
     required this.id,
     this.code = "",
     this.status = 0,
@@ -24,8 +24,8 @@ class Sale {
     this.updatedAt = "",
   });
 
-  factory Sale.fromJson(Map<String, dynamic> json) {
-    return Sale(
+  factory SaleModel.fromJson(Map<String, dynamic> json) {
+    return SaleModel(
       id: json["id"],
       code: json["code"] ?? "",
       status: json["status"] ?? 0,

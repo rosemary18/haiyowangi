@@ -1,16 +1,16 @@
-class OfficeInventory {
+class OfficeInventoryModel {
 
   final int id;
   final int? storeId;
   final String? name;
-  final double? price;
+  final int? price;
   final String? buyDate;
-  final double? qty;
+  final int? qty;
   final int? goodsCondition;
   final String? createdAt;
   final String? updatedAt;
 
-  OfficeInventory({
+  OfficeInventoryModel({
     required this.id,
     this.storeId,
     this.name = "",
@@ -22,8 +22,8 @@ class OfficeInventory {
     this.updatedAt = "",
   });
 
-  factory OfficeInventory.fromJson(Map<String, dynamic> json) {
-    return OfficeInventory(
+  factory OfficeInventoryModel.fromJson(Map<String, dynamic> json) {
+    return OfficeInventoryModel(
       id: json["id"],
       storeId: json["store_id"],
       name: json["name"] ?? "",

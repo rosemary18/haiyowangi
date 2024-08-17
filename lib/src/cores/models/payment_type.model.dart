@@ -1,4 +1,4 @@
-class PaymentType {
+class PaymentTypeModel {
 
   final int id;
   final String? name;
@@ -7,7 +7,7 @@ class PaymentType {
   final String? createdAt;
   final String? updatedAt;
 
-  PaymentType({
+  PaymentTypeModel({
     required this.id,
     this.name = "",
     this.description = "",
@@ -16,8 +16,8 @@ class PaymentType {
     this.updatedAt = "",
   });
 
-  factory PaymentType.fromJson(Map<String, dynamic> json) {
-    return PaymentType(
+  factory PaymentTypeModel.fromJson(Map<String, dynamic> json) {
+    return PaymentTypeModel(
       id: json["id"],
       name: json["name"] ?? "",
       description: json["description"] ?? "",

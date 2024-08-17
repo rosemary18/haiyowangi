@@ -1,4 +1,4 @@
-class IncomingStockItem {
+class IncomingStockItemModel {
 
   final int id;
   final int? incomingStockId;
@@ -8,7 +8,7 @@ class IncomingStockItem {
   final String? createdAt;
   final String? updatedAt;
 
-  IncomingStockItem({
+  IncomingStockItemModel({
     required this.id,
     this.incomingStockId,
     this.productId,
@@ -18,8 +18,8 @@ class IncomingStockItem {
     this.updatedAt = "",
   });
 
-  factory IncomingStockItem.fromJson(Map<String, dynamic> json) {
-    return IncomingStockItem(
+  factory IncomingStockItemModel.fromJson(Map<String, dynamic> json) {
+    return IncomingStockItemModel(
       id: json["id"],
       incomingStockId: json["incoming_stock_id"],
       productId: json["product_id"],

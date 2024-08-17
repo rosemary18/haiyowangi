@@ -1,19 +1,19 @@
-class VariantItem {
+class VariantItemModel {
   
   final int id;
   final int? variantId;
   final int? variantTypeItemId;
   final String? createdAt;
 
-  VariantItem({
+  VariantItemModel({
     required this.id,
     this.variantId,
     this.variantTypeItemId,
     this.createdAt = "",
   });
 
-  factory VariantItem.fromJson(Map<String, dynamic> json) {
-    return VariantItem(
+  factory VariantItemModel.fromJson(Map<String, dynamic> json) {
+    return VariantItemModel(
       id: json["id"],
       variantId: json["variant_id"],
       variantTypeItemId: json["variant_type_item_id"],

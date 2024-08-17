@@ -1,4 +1,4 @@
-class Packet {
+class PacketModel {
 
   final int id;
   final String? name;
@@ -9,7 +9,7 @@ class Packet {
   final String? createdAt;
   final String? updatedAt;
 
-  Packet({
+  PacketModel({
     required this.id,
     this.name = "",
     this.description = "",
@@ -20,8 +20,8 @@ class Packet {
     this.updatedAt = "",
   });
 
-  factory Packet.fromJson(Map<String, dynamic> json) {
-    return Packet(
+  factory PacketModel.fromJson(Map<String, dynamic> json) {
+    return PacketModel(
       id: json["id"],
       name: json["name"] ?? "",
       description: json["description"] ?? "",

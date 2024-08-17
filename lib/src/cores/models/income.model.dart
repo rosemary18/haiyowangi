@@ -1,16 +1,16 @@
-class Income {
+class IncomeModel {
 
   final int id;
   final String? code;
   final String? name;
-  final double? nominal;
+  final int? nominal;
   final String? tag;
   final String? description;
   final int? storeId;
   final String? createdAt;
   final String? updatedAt;
 
-  Income({
+  IncomeModel({
     required this.id,
     this.code = "",
     this.name = "",
@@ -22,8 +22,8 @@ class Income {
     this.updatedAt = "",
   });
 
-  factory Income.fromJson(Map<String, dynamic> json) {
-    return Income(
+  factory IncomeModel.fromJson(Map<String, dynamic> json) {
+    return IncomeModel(
       id: json["id"],
       code: json["code"] ?? "",
       name: json["name"] ?? "",

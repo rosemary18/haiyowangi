@@ -1,4 +1,4 @@
-class PacketItem {
+class PacketItemModel {
   
   final int id;
   final int? packetId;
@@ -8,7 +8,7 @@ class PacketItem {
   final String? createdAt;
   final String? updatedAt;
 
-  PacketItem({
+  PacketItemModel({
     required this.id,
     this.packetId,
     this.productId,
@@ -18,8 +18,8 @@ class PacketItem {
     this.updatedAt = "",
   });
 
-  factory PacketItem.fromJson(Map<String, dynamic> json) {
-    return PacketItem(
+  factory PacketItemModel.fromJson(Map<String, dynamic> json) {
+    return PacketItemModel(
       id: json["id"],
       packetId: json["packet_id"],
       productId: json["product_id"],

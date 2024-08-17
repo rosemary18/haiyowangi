@@ -1,4 +1,4 @@
-class Payment {
+class PaymentModel {
 
   final int id;
   final String? code;
@@ -11,7 +11,7 @@ class Payment {
   final String? createdAt;
   final String? updatedAt;
 
-  Payment({
+  PaymentModel({
     required this.id,
     this.code = "",
     this.accountBank = "",
@@ -24,8 +24,8 @@ class Payment {
     this.updatedAt = "",
   });
 
-  factory Payment.fromJson(Map<String, dynamic> json) {
-    return Payment(
+  factory PaymentModel.fromJson(Map<String, dynamic> json) {
+    return PaymentModel(
       id: json["id"],
       code: json["code"] ?? "",
       accountBank: json["account_bank"] ?? "",

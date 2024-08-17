@@ -12,6 +12,7 @@ void showModalLoader({ Duration? duration }) async {
         return PopScope(
           canPop: false,
           child: Dialog(
+            shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(0))),
             insetPadding: const EdgeInsets.all(0),
             backgroundColor: const Color.fromARGB(107, 54, 54, 54),
             elevation: 0,

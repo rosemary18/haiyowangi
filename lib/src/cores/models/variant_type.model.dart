@@ -1,19 +1,19 @@
-class VariantType { 
+class VariantTypeModel { 
 
   final int id;
   final int? productId;
   final String? name;
   final String? createdAt;
 
-  VariantType({
+  VariantTypeModel({
     required this.id,
     this.productId,
     this.name = "",
     this.createdAt = "",
   });
 
-  factory VariantType.fromJson(Map<String, dynamic> json) {
-    return VariantType(
+  factory VariantTypeModel.fromJson(Map<String, dynamic> json) {
+    return VariantTypeModel(
       id: json["id"],
       productId: json["product_id"],
       name: json["name"] ?? "",

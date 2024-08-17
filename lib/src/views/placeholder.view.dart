@@ -5,9 +5,17 @@ class PlaceholderView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(
-        child: Text("Placeholder")
+    return Scaffold(
+      body: Container(
+        height: double.infinity,
+        width: double.infinity,
+        padding: const EdgeInsets.all(12),
+        child: const Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text("Placeholder")
+          ],
+        )
       )
     );
   }

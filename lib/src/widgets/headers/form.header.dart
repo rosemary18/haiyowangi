@@ -23,7 +23,7 @@ class FormHeader extends StatelessWidget implements PreferredSizeWidget {
         elevation: .5,
         actions: [
           Container(
-            margin: const EdgeInsets.only(right: 12),
+            margin: const EdgeInsets.only(right: 12, bottom: 2),
             child: Row(
               children: [
                 TouchableOpacity(

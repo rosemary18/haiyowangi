@@ -19,13 +19,14 @@ class StoresView extends StatefulWidget {
 class _StoresViewState extends State<StoresView> {
 
   final StoreRepository _storeRepo = StoreRepository();
+  final NotificationRepository _notificationRepo = NotificationRepository();
   final TextEditingController _searchController = TextEditingController();
   PersistentBottomSheetController? _sheetController;
-  final List<Store> _stores = [];
-  final List<Store> _searchStores = [];
+  final List<StoreModel> _stores = [];
+  final List<StoreModel> _searchStores = [];
 
   bool loading = true;
-  Store? _selectedStore;
+  StoreModel? _selectedStore;
 
   @override
   void initState() {
@@ -40,7 +41,7 @@ class _StoresViewState extends State<StoresView> {
     final response = await _storeRepo.getStores(id);
 
     for (var item in response.data["data"]) {
-      _stores.add(Store.fromJson(item));
+      _stores.add(StoreModel.fromJson(item));
     }
     
     _searchController.clear();
@@ -60,7 +61,7 @@ class _StoresViewState extends State<StoresView> {
     setState(() {});
   }
 
-  void handlerSelectStore(Store store, BuildContext ctx) {
+  void handlerSelectStore(StoreModel store, BuildContext ctx) {
     _selectedStore = _selectedStore == store ? null :  store;
     if (_selectedStore != null) {
       if (_sheetController == null) {
@@ -75,7 +76,7 @@ class _StoresViewState extends State<StoresView> {
               color: Colors.white,
               borderRadius: BorderRadius.only(topLeft: Radius.circular(16), topRight: Radius.circular(16)),
               boxShadow: [
-                BoxShadow(color: Color.fromARGB(22, 0, 0, 0), blurRadius: 5, spreadRadius: 4)
+                BoxShadow(color: Color.fromARGB(22, 0, 0, 0), blurRadius: 10, spreadRadius: 2.5)
               ]
             ),
             child: Stack(
@@ -127,7 +128,7 @@ class _StoresViewState extends State<StoresView> {
                                 ),
                                 const SizedBox(height: 2),
                                 Text(
-                                  "Terakhir sinkronasi: ${store.lastSync!.isEmpty ? "-" : store.lastSync!}",
+                                  "Terakhir sinkronasi: ${store.lastSync!.isEmpty ? "-" : formatDateFromString(store.lastSync!)}",
                                   style: const TextStyle(color: greyTextColor, fontSize: 11, fontWeight: FontWeight.w500),
                                 )
                               ],
@@ -159,7 +160,7 @@ class _StoresViewState extends State<StoresView> {
                 ),
                 Positioned(
                   height: 48,
-                  bottom: MediaQuery.of(ctx).viewPadding.bottom,
+                  bottom: MediaQuery.of(ctx).viewPadding.bottom + 8,
                   right: 0,
                   left: 0,
                   child: ButtonOpacity(
@@ -191,13 +192,17 @@ class _StoresViewState extends State<StoresView> {
     setState(() {});
   }
 
-  void handlerSignInStore(Store? store) {
+  void handlerSignInStore(StoreModel? store) async {
 
     if (store != null) {
       final state = context.read<AuthBloc>().state;
       final box = Hive.box("storage");
       box.put("store_id", store.id);
       state.store = store;
+      var res = await _notificationRepo.getNotifications("${store.id}");
+      if (res.statusCode == 200) {
+        state.unreadNotification = res.data!["data"]!["unread"];
+      }
       context.read<AuthBloc>().add(AuthUpdateState(state: state));
       context.goNamed(appRoutes.dashboard.name);
     }
@@ -206,7 +211,6 @@ class _StoresViewState extends State<StoresView> {
   Future<void> handlerCreateStore() async {
     final id = context.read<AuthBloc>().state.user?.id;
     final result = await context.pushNamed<bool>(appRoutes.registerStore.name);
-    debugPrint("result: $result");
     if (result != null && result == true) {
       setState(() { loading = true; });
       handlerGetStores("$id");
@@ -260,7 +264,7 @@ class _StoresViewState extends State<StoresView> {
     );
   }
 
-  Widget viewStoreCard(BuildContext context, Store store) {
+  Widget viewStoreCard(BuildContext context, StoreModel store) {
     return TouchableOpacity(
       onPress: () => handlerSelectStore(store, context),
       child: Container(
@@ -298,7 +302,7 @@ class _StoresViewState extends State<StoresView> {
                     style: const TextStyle(color: blackColor, fontSize: 14, fontWeight: FontWeight.w600),
                   ),
                   Text(
-                    "Terakhir sinkronasi: ${store.lastSync!.isEmpty ? "-" : store.lastSync!}",
+                    "Terakhir sinkronasi: ${store.lastSync!.isEmpty ? "-" : formatDateFromString(store.lastSync!)}",
                     style: const TextStyle(color: greyTextColor, fontSize: 11, fontWeight: FontWeight.w500),
                   )
                 ],

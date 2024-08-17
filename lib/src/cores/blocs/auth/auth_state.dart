@@ -4,27 +4,30 @@ final class AuthState {
 
   bool? isAuthenticated;
   String token;
-  User? user;
-  Store? store;
+  UserModel? user;
+  StoreModel? store;
+  int unreadNotification;
 
   AuthState({
     this.isAuthenticated,
     this.token = "",
     this.user,
-    this.store
+    this.store,
+    this.unreadNotification = 0
   });
 
   AuthState copyWith({
     bool? isAuthenticated,
     String? token,
-    User? user,
-    Store? store
+    UserModel? user,
+    StoreModel? store
   }) {
     return AuthState(
       isAuthenticated: isAuthenticated ?? this.isAuthenticated,
       token: token ?? this.token,
       user: user ?? this.user,
-      store: store ?? this.store
+      store: store ?? this.store,
+      unreadNotification: unreadNotification
     );
   }
 
@@ -33,7 +36,8 @@ final class AuthState {
       "isAuthenticated": isAuthenticated,
       "token": token,
       "user": user?.toJson(),
-      "store": store?.toJson()
+      "store": store?.toJson(),
+      "unreadNotification": unreadNotification
     };
   }
 }

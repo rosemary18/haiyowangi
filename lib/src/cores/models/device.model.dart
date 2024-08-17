@@ -1,4 +1,4 @@
-class Device {
+class DeviceModel {
 
   final int id;
   final String? device_id;
@@ -7,7 +7,7 @@ class Device {
   final String? createdAt;
   final String? updatedAt;
 
-  Device({
+  DeviceModel({
     required this.id,
     this.device_id = "",
     this.store_id,
@@ -16,8 +16,8 @@ class Device {
     this.updatedAt = "",
   });
 
-  factory Device.fromJson(Map<String, dynamic> json) {
-    return Device(
+  factory DeviceModel.fromJson(Map<String, dynamic> json) {
+    return DeviceModel(
       id: json["id"],
       device_id: json["device_id"] ?? "",
       store_id: json["store_id"],

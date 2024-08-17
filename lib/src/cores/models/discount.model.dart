@@ -1,4 +1,4 @@
-class Discount {
+class DiscountModel {
 
   final int id;
   final String? name;
@@ -18,7 +18,7 @@ class Discount {
   final String? createdAt;
   final String? updatedAt;
 
-  Discount({
+  DiscountModel({
     required this.id,
     this.name = "",
     this.code = "",
@@ -38,8 +38,8 @@ class Discount {
     this.updatedAt = "",
   });
 
-  factory Discount.fromJson(Map<String, dynamic> json) {
-    return Discount(
+  factory DiscountModel.fromJson(Map<String, dynamic> json) {
+    return DiscountModel(
       id: json["id"],
       name: json["name"] ?? "",
       code: json["code"] ?? "",

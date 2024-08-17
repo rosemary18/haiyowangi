@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:haiyowangi/src/index.dart';
 
 class DashboardView extends StatefulWidget {
   const DashboardView({super.key});
@@ -15,6 +16,11 @@ class _DashboardViewState extends State<DashboardView> {
         color: Colors.white,
         height: double.infinity,
         width: double.infinity,
+        child: const Column(
+          children: [
+            SkletonView()
+          ],
+        ),
       ),
     );
   }

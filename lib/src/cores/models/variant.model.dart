@@ -1,4 +1,4 @@
-class Variant {
+class VariantModel {
 
   final int id;
   final int? productId;
@@ -14,7 +14,7 @@ class Variant {
   final String? createdAt;
   final String? updatedAt;
 
-  Variant({
+  VariantModel({
     required this.id,
     this.productId,
     this.name = "",
@@ -30,8 +30,8 @@ class Variant {
     this.updatedAt = "",
   });
 
-  factory Variant.fromJson(Map<String, dynamic> json) {
-    return Variant(
+  factory VariantModel.fromJson(Map<String, dynamic> json) {
+    return VariantModel(
       id: json["id"],
       productId: json["product_id"],
       name: json["name"] ?? "",

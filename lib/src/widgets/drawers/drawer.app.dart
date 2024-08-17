@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_boxicons/flutter_boxicons.dart';
 import 'package:go_router/go_router.dart';
 import 'package:haiyowangi/src/index.dart';
 import 'drawer.route.dart';
@@ -13,7 +14,6 @@ class DrawerApp extends StatefulWidget {
 
 class _DrawerAppState extends State<DrawerApp> {
 
-
   @override
   void initState() {
     super.initState();
@@ -26,46 +26,20 @@ class _DrawerAppState extends State<DrawerApp> {
     context.read<AuthBloc>().add(AuthLogout());
   }
 
-  Widget buildMenuItem(BuildContext context, r) {
-
-    return TouchableOpacity(
-      onPress: () {
-        Navigator.pop(context);
-        context.go(r?.routePath);
-      },
-      child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 6),
-        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 6),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            const Icon(Icons.close, color: blackColor),
-            Expanded(
-              child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8),
-                child: Text("${r?.title!}"),
-              )
-            ),
-            if (r is IDRouteGroup) const Icon(Icons.arrow_drop_down_outlined, color: greyDarkColor)
-          ],
-        )
-      ), 
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
-    // debugPrint(drawerRoutes);
+    
     return Scaffold(
       body: Container(
-        color: Colors.white,
         height: double.infinity,
         width: double.infinity,
+        color: Colors.white,
         child: BlocConsumer<AuthBloc, AuthState>(
           listener: (context, state) {
             
           },
           builder: (context, state) => Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
                 constraints: BoxConstraints(minHeight: 40 + MediaQuery.of(context).viewPadding.top),
@@ -104,7 +78,7 @@ class _DrawerAppState extends State<DrawerApp> {
                             style: const TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w600),
                           ),
                           Text(
-                            "Terakhir sinkronasi: ${state.store!.lastSync!.isEmpty ? "-" : state.store!.lastSync!}",
+                            "Terakhir sinkronasi: ${state.store!.lastSync!.isEmpty ? "-" : formatDateFromString(state.store!.lastSync!)}",
                             style: const TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.w500),
                           )
                         ],
@@ -127,13 +101,33 @@ class _DrawerAppState extends State<DrawerApp> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               TouchableOpacity(
-                                onPress: () { close(); },
+                                onPress: () { 
+                                  close();
+                                  Navigator.pop(context);
+                                  context.goNamed(appRoutes.account.name); 
+                                },
+                                child: const Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Icon(Boxicons.bx_user, color: blackColor, size: 16),
+                                    SizedBox(width: 10),
+                                    Text("Akun", style: TextStyle(color: blackColor, fontWeight: FontWeight.w500, fontSize: 14)),
+                                  ],
+                                ), 
+                              ),
+                              const SizedBox(height: 12),
+                              TouchableOpacity(
+                                onPress: () { 
+                                  close();
+                                  Navigator.pop(context);
+                                  context.goNamed(appRoutes.yourstores.name); 
+                                },
                                 child: const Row(
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
                                     Icon(Icons.storefront, color: blackColor, size: 16),
                                     SizedBox(width: 10),
-                                    Text("Toko", style: TextStyle(color: blackColor, fontWeight: FontWeight.w500, fontSize: 14)),
+                                    Text("Toko Anda", style: TextStyle(color: blackColor, fontWeight: FontWeight.w500, fontSize: 14)),
                                   ],
                                 ), 
                               ),
@@ -162,40 +156,140 @@ class _DrawerAppState extends State<DrawerApp> {
               Expanded(
                 child: SingleChildScrollView(
                   child: Container(
-                    padding: const EdgeInsets.symmetric(vertical: 12),
+                    padding: EdgeInsets.only(top: 10, bottom: MediaQuery.of(context).viewPadding.bottom),
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        TouchableOpacity(
-                          onPress: () {
-                          },
-                          child: Container(
-                            margin: const EdgeInsets.only(left: 6, right: 6, top: 6),
-                            padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 6),
-                            child: const Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Text("Semua Toko"),
-                                Text("12"),
-                              ],
-                            )
-                          ), 
-                        ),
-                        const Padding(
-                          padding: EdgeInsets.symmetric(vertical: 8),
-                          child: Divider(color: greyLightColor, height: 1, indent: 12, endIndent: 12),
-                        ),
-                        for (final r in drawerRoutes.routes) buildMenuItem(context, r)
+                        for (final r in drawerRoutes.routes) DMenu(menu: r),
                       ],
                     ),
                   ),
                 )
+              ),
+              Container(
+                padding: EdgeInsets.only(left: 12, top: 12, right: 12, bottom: MediaQuery.of(context).viewPadding.bottom + 12),
+                child: const Text("©2024 Haiyo Wangi. All rights reserved", style: TextStyle(color: blackColor, fontSize: 8, fontWeight: FontWeight.w500)),
               )
             ],
           )
         )
       )
+    );
+  }
+}
+
+class DMenu extends StatefulWidget {
+
+  final dynamic menu;
+
+  const DMenu({super.key, required this.menu});
+
+  @override
+  State<DMenu> createState() => _DMenuState();
+}
+
+class _DMenuState extends State<DMenu> {
+
+  bool isExpanded = false;
+  String? activePath;
+
+  @override
+  void initState() {
+    super.initState();
+    
+    if (widget.menu is IDRoute) {
+      if (widget.menu.routePath == GoRouter.of(context).routeInformationProvider.value.uri.toString()) {
+        setState(() {
+          activePath = widget.menu.routePath;
+        });
+      }
+    } else if (widget.menu is IDRouteGroup) {
+      for (final r in widget.menu.routes) {
+        if (r is IDRoute && r.routePath == GoRouter.of(context).routeInformationProvider.value.uri.toString()) {
+          setState(() {
+            isExpanded = true;
+            activePath = r.routePath;
+          });
+          break;
+        }
+      }
+    }
+
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return TouchableOpacity(
+      onPress: () {
+        if (widget.menu is IDRouteGroup) {
+          setState(() {
+            isExpanded = !isExpanded;
+          });
+        } else {
+          Navigator.pop(context);
+          context.go(widget.menu?.routePath);
+        }
+      },
+      child: Container(
+        margin: const EdgeInsets.symmetric(vertical: 2),
+        padding: const EdgeInsets.symmetric(horizontal: 6),
+        color: (widget.menu is IDRoute && widget.menu.routePath == activePath) ? greenLightColor : Colors.transparent,
+        child: Column(
+          children: [
+            Container(
+              padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 6),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  if (widget.menu?.icon != null) Icon(widget.menu?.icon, color: (widget.menu is IDRoute && widget.menu.routePath == activePath) ? primaryColor : blackColor),
+                  Expanded(
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 8),
+                      child: Text("${widget.menu?.title!}", style: TextStyle(color: (widget.menu is IDRoute && widget.menu.routePath == activePath) ? primaryColor : blackColor, fontWeight: FontWeight.w500, fontSize: 14)),
+                    )
+                  ),
+                  if (widget.menu is IDRouteGroup) Icon(isExpanded ? Icons.arrow_drop_up_outlined : Icons.arrow_drop_down_outlined, color: isExpanded ? primaryColor : greyDarkColor)
+                ],
+              ),
+            ),
+            if (isExpanded && (widget.menu is IDRouteGroup)) Container(
+              margin: const EdgeInsets.only(top: 4, left: 8, right: 8),
+              decoration: const BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(5)),
+                color: white1Color,
+              ),
+              clipBehavior: Clip.hardEdge,
+              child: Column(
+                children: [
+                  for (final r in widget.menu.routes) TouchableOpacity(
+                    onPress: () {
+                      Navigator.pop(context);
+                      context.go(r.routePath);
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 6),
+                      height: 40,
+                      color: (r.routePath == activePath) ? greenLightColor : Colors.transparent,
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          if (r.icon != null) Icon(r.icon, color: blackColor),
+                          Expanded(
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(horizontal: 8),
+                              child: Text(r.title, style: TextStyle(color: (r.routePath == activePath) ? primaryColor : blackColor, fontWeight: FontWeight.w500, fontSize: 14)),
+                            )
+                          ),
+                        ],
+                      ),
+                    ), 
+                  ),
+                ],
+              ),
+            )
+          ],
+        )
+      ), 
     );
   }
 }

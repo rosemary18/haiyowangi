@@ -26,7 +26,7 @@ class AuthRepository {
     if (response.statusCode != 200) {
       scaffoldMessengerKey.currentState?.showSnackBar(
         SnackBar(
-          content: Text(response.data["message"]!),
+          content: Text(response.data["message"]! ?? response.statusMessage),
           backgroundColor: Colors.red,
         ),
       );
@@ -57,7 +57,7 @@ class AuthRepository {
     if (response.statusCode != 200) {
       scaffoldMessengerKey.currentState?.showSnackBar(
         SnackBar(
-          content: Text(response.data["message"]),
+          content: Text(response.data["message"]! ?? response.statusMessage!),
           backgroundColor: Colors.red,
         ),
       );
@@ -106,14 +106,14 @@ class AuthRepository {
     if (response.statusCode != 200) {
       scaffoldMessengerKey.currentState?.showSnackBar(
         SnackBar(
-          content: Text(response.data["message"]),
+          content: Text(response.data["message"]! ?? response.statusMessage!),
           backgroundColor: Colors.red,
         ),
       );
     } else {
       scaffoldMessengerKey.currentState?.showSnackBar(
         SnackBar(
-          content: Text(response.data["message"]),
+          content: Text(response.data["message"]! ?? response.statusMessage!),
           backgroundColor: Colors.green,
         ),
       );
