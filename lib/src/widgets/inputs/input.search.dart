@@ -14,6 +14,7 @@ class InputSearch extends StatefulWidget {
   final bool enabled;
   final bool obscure;
   final Widget? prefixIcon;
+  final Widget Function()? suffix;
   final Function(String)? onChanged;
   final Function(String)? onSubmitted;
 
@@ -28,6 +29,7 @@ class InputSearch extends StatefulWidget {
     this.enabled = true,
     this.obscure = false,
     this.prefixIcon,
+    this.suffix,
     this.onChanged,
     this.onSubmitted
   });
@@ -68,17 +70,17 @@ class _InputSearchState extends State<InputSearch> {
         decoration: InputDecoration(
           prefixIcon: const Icon(IconlyLight.search, size: 14, color: Color(0xFF767676)),
           prefixIconConstraints: const BoxConstraints.expand(width: 38, height: 38),
-          contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+          contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
           hintText: widget.placeholder,
           hintStyle: const TextStyle(color: greyTextColor),
-          fillColor: greyColor,
+          fillColor: const Color.fromARGB(59, 238, 238, 238),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(100),
-            borderSide: const BorderSide(width: 0, style: BorderStyle.none),
+            borderSide: const BorderSide(color: greySoftColor, width: 1),
           ),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(100),
-            borderSide: const BorderSide(width: 0, style: BorderStyle.none),
+            borderSide: const BorderSide(color: greySoftColor, width: 1),
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(100),
@@ -88,13 +90,18 @@ class _InputSearchState extends State<InputSearch> {
           counterStyle: const TextStyle(fontSize: 0, height: 0),
           errorText: widget.errorText,
           errorStyle: const TextStyle(color: Colors.red, fontSize: 10),
-          suffixIcon: value.isNotEmpty ? TouchableOpacity(
+          suffix: (value.isNotEmpty) ? TouchableOpacity(
             onPress: () {
               widget.controller?.clear();
               handlerChange("");
             },
-            child: const Icon(Icons.close, size: 14, color: Color(0xFF767676))
+            child: const SizedBox(
+              height: 40,
+              width: 26,
+              child: Icon(Icons.close, size: 14, color: Color(0xFF767676))
+            )
           ) : null,
+          suffixIcon: widget.suffix == null ? null : widget.suffix!()
         ),
         style: widget.textStyle,
         maxLength: widget.maxCharacter,

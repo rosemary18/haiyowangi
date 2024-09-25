@@ -40,6 +40,23 @@ class StaffRepository {
     return response;
   }
 
+  Future<Response> uploadImage(String id, Object? data) async {
+
+    String url = "/staff/update-photo/$id";
+    Response response = await putFetch(url, data: data, options: Options(headers: {"Content-Type": "multipart/form-data"}));
+
+    if (response.statusCode != 200) {
+      scaffoldMessengerKey.currentState?.showSnackBar(
+        SnackBar(
+          content: Text(response.data["message"]! ?? response.statusMessage!),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+
+    return response;
+  }
+
   Future<Response> update(String id, Map<String, dynamic> data) async {
 
     showModalLoader();

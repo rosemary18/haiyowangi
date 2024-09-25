@@ -104,7 +104,7 @@ class _DetailExpenseViewState extends State<DetailExpenseView> {
     final data = {
       "tag": _controllerTag.text,
       "name": _controllerName.text,
-      "nominal": parseFromInput(_controllerNominal.text),
+      "nominal": parsePriceFromInput(_controllerNominal.text),
       "date": _controllerDate.text,
       "description": _controllerDescription.text,
     };
@@ -308,7 +308,7 @@ class _DetailExpenseViewState extends State<DetailExpenseView> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                const Text("Terakhir diubah pada", style: TextStyle(fontSize: 12, color: greyTextColor)),
+                                const Text("Terakhir diubah", style: TextStyle(fontSize: 12, color: greyTextColor)),
                                 Text(formatDateFromString(_expense.updatedAt ?? ""), style: const TextStyle(fontSize: 12)),
                               ],
                             ),

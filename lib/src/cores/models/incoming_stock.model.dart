@@ -1,3 +1,5 @@
+import 'package:haiyowangi/src/index.dart';
+
 class IncomingStockModel {
 
   final int id;
@@ -8,6 +10,7 @@ class IncomingStockModel {
   final int? storeId;
   final String? createdAt;
   final String? updatedAt;
+  final List<IncomingStockItemModel> incomingStockItems;
 
   IncomingStockModel({
     required this.id,
@@ -18,6 +21,7 @@ class IncomingStockModel {
     this.storeId,
     this.createdAt = "",
     this.updatedAt = "",
+    this.incomingStockItems = const [],
   });
 
   factory IncomingStockModel.fromJson(Map<String, dynamic> json) {
@@ -30,6 +34,7 @@ class IncomingStockModel {
       storeId: json["store_id"],
       createdAt: json["created_at"] ?? "",
       updatedAt: json["updated_at"] ?? "",
+      incomingStockItems: (json["incoming_stock_items"] == null) ? [] : List<IncomingStockItemModel>.from(json["incoming_stock_items"].map((x) => IncomingStockItemModel.fromJson(x))),
     );
   }
 
@@ -42,7 +47,8 @@ class IncomingStockModel {
       "status": status,
       "store_id": storeId,
       "created_at": createdAt,
-      "updated_at": updatedAt
+      "updated_at": updatedAt,
+      "incoming_stock_items": List<dynamic>.from(incomingStockItems.map((x) => x.toJson())),
     };
   }
 

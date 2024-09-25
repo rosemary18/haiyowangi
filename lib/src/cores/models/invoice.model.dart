@@ -1,17 +1,20 @@
+import 'package:haiyowangi/src/index.dart';
+
 class InvoiceModel {
 
   final int id;
   final String? code;
   final int? salesId;
   final int? paymentId;
-  final double? status;
-  final double? discount;
-  final double? subTotal;
-  final double? total;
-  final double? cash;
-  final double? changeMoney;
+  final int? status;
+  final int? discount;
+  final int? subTotal;
+  final int? total;
+  final int? cash;
+  final int? changeMoney;
   final String? createdAt;
   final String? updatedAt;
+  final PaymentModel? payment;
 
   InvoiceModel({
     required this.id,
@@ -26,6 +29,7 @@ class InvoiceModel {
     this.changeMoney = 0,
     this.createdAt = "",
     this.updatedAt = "",
+    this.payment
   });
 
   factory InvoiceModel.fromJson(Map<String, dynamic> json) {
@@ -42,6 +46,7 @@ class InvoiceModel {
       changeMoney: json["change_money"] ?? 0,
       createdAt: json["created_at"] ?? "",
       updatedAt: json["updated_at"] ?? "",
+      payment: json["payment"] == null ? null : PaymentModel.fromJson(json["payment"]),
     );
   }
 
@@ -58,7 +63,8 @@ class InvoiceModel {
       "cash": cash,
       "change_money": changeMoney,
       "created_at": createdAt,
-      "updated_at": updatedAt
+      "updated_at": updatedAt,
+      "payment": payment?.toJson(),
     };
   }
   

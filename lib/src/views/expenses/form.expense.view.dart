@@ -59,7 +59,7 @@ class _FormExpenseViewState extends State<FormExpenseView> {
       "tag": _controllerTag.text,
       "name": _controllerName.text,
       "description": _controllerDescription.text,
-      "nominal": parseFromInput(_controllerNominal.text),
+      "nominal": parsePriceFromInput(_controllerNominal.text),
       "date": _controllerDate.text,
     };
 

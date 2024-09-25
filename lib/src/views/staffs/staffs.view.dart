@@ -22,6 +22,7 @@ class _StaffsViewState extends State<StaffsView> {
   final ScrollController _scrollController = ScrollController();
   final TextEditingController _searchController = TextEditingController();
   List<StaffModel> staffs = [];
+  int total = 0;
   int page = 1;
   int lastPage = 1;
   bool loading = true;
@@ -41,7 +42,8 @@ class _StaffsViewState extends State<StaffsView> {
     
     var state = context.read<AuthBloc>().state;
     final response = await _repository.getData("${state.store!.id}", queryParams: {"search_text": _searchController.text});
-    
+
+    total = 0;
     if (response.statusCode == 200) {
       staffs.clear();
       for (var item in response.data!["data"]!["staffs"]) {
@@ -49,6 +51,7 @@ class _StaffsViewState extends State<StaffsView> {
       }
       page = response.data!["data"]!["current_page"];
       lastPage = response.data!["data"]!["total_page"];
+      total = response.data!["data"]!["total"];
     }
 
     loading = false;
@@ -236,7 +239,7 @@ class _StaffsViewState extends State<StaffsView> {
                 ),
                 TouchableOpacity(
                   child: const Icon(
-                    Boxicons.bx_trash_alt,
+                    Boxicons.bxs_trash,
                     color: redColor,
                     size: 14
                   ), 
@@ -280,14 +283,19 @@ class _StaffsViewState extends State<StaffsView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: white1Color,
       body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          Padding(
+            padding: const EdgeInsets.only(left: 12, top: 12, right: 12, bottom: 0),
+            child: Text("Daftar Staff ($total)", style: const TextStyle(fontSize: 12)),
+          ),
           Expanded(
             child: Container(
               height: double.infinity,
               width: double.infinity,
-              color: Colors.white,
+              color: white1Color,
               child: RefreshIndicator(
                 onRefresh: handlerGetData,
                 child: ListView.builder(
@@ -321,14 +329,14 @@ class _StaffsViewState extends State<StaffsView> {
                     height: 40,
                     width: 40,
                     decoration: const BoxDecoration(
-                      color: primaryColor,
+                      color: Colors.green,
                       borderRadius: BorderRadius.all(Radius.circular(100)),
                       boxShadow: [
                         BoxShadow(color: Colors.black12, spreadRadius: 1, blurRadius: 1, offset: Offset(0, 1))
                       ]
                     ),
                     margin: const EdgeInsets.only(left: 12),
-                    child: const Icon(CupertinoIcons.plus, color: Colors.white, size: 24),
+                    child: const Icon(CupertinoIcons.plus, color: Colors.white, size: 20),
                   ),
                 )
               ],

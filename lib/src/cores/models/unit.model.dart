@@ -22,7 +22,7 @@ class UnitModel {
       name: json["name"] ?? "",
       symbol: json["symbol"] ?? "",
       base_unit_symbol: json["base_unit_symbol"] ?? "",
-      conversion_factor_to_base: json["conversion_factor_to_base"] ?? 0,
+      conversion_factor_to_base: double.parse(json["conversion_factor_to_base"].toString().isNotEmpty ? json["conversion_factor_to_base"].toString() : "0"),
       createdAt: json["created_at"] ?? "",
     );
   }

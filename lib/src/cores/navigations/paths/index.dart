@@ -27,6 +27,11 @@ class AppRoutes {
   final Route outgoingStock;
   final Route staff;
 
+  final Route formProduct;
+  final Route detailProduct;
+  final Route editProduct;
+  final Route copyProduct;
+
   final Route formOfficeInventory;
   final Route detailOfficeInventory;
 
@@ -38,6 +43,29 @@ class AppRoutes {
 
   final Route formStaff;
   final Route detailStaff;
+
+  final Route formIngredient;
+  final Route detailIngredient;
+
+  final Route formPacket;
+  final Route detailPacket;
+
+  final Route formVariant;
+  final Route detailVariant;
+  final Route editVariant;
+  final Route manageVariant;
+
+  final Route formIncomingStock;
+  final Route detailIncomingStock;
+
+  final Route formOutgoingStock;
+  final Route detailOutgoingStock;
+
+  final Route formDiscount;
+  final Route detailDiscount;
+
+  final Route detailSale;
+  final Route detailPayment;
 
   const AppRoutes({
 
@@ -65,6 +93,11 @@ class AppRoutes {
     this.outgoingStock = const Route(name: "outgoing_stock", path: "/outgoing_stock"),
     this.staff = const Route(name: "staff", path: "/staff"),
 
+    this.formProduct = const Route(name: "form_product", path: "/form_product"),
+    this.detailProduct = const Route(name: "detail_product", path: "/detail_product"),
+    this.editProduct = const Route(name: "edit_product", path: "/edit_product"),
+    this.copyProduct = const Route(name: "copy_product", path: "/copy_product"),
+
     this.formOfficeInventory = const Route(name: "form_office_inventory", path: "/form_office_inventory"),
     this.detailOfficeInventory = const Route(name: "detail_office_inventory", path: "/detail_office_inventory"),
 
@@ -76,6 +109,29 @@ class AppRoutes {
 
     this.formStaff = const Route(name: "form_staff", path: "/form_staff"),
     this.detailStaff = const Route(name: "detail_staff", path: "/detail_staff"),
+
+    this.formIngredient = const Route(name: "form_ingredient", path: "/form_ingredient"),
+    this.detailIngredient = const Route(name: "detail_ingredient", path: "/detail_ingredient"),
+
+    this.formPacket = const Route(name: "form_packet", path: "/form_packet"),
+    this.detailPacket = const Route(name: "detail_packet", path: "/detail_packet"),
+
+    this.formVariant = const Route(name: "form_variant", path: "/form_variant"),
+    this.editVariant = const Route(name: "edit_variant", path: "/edit_variant"),
+    this.detailVariant = const Route(name: "detail_variant", path: "/detail_variant"),
+    this.manageVariant = const Route(name: "manage_variant", path: "/manage_variant"),
+
+    this.formIncomingStock = const Route(name: "form_incoming_stock", path: "/form_incoming_stock"),
+    this.detailIncomingStock = const Route(name: "detail_incoming_stock", path: "/detail_incoming_stock"),
+
+    this.formOutgoingStock = const Route(name: "form_outgoing_stock", path: "/form_outgoing_stock"),
+    this.detailOutgoingStock = const Route(name: "detail_outgoing_stock", path: "/detail_outgoing_stock"),
+
+    this.formDiscount = const Route(name: "form_discount", path: "/form_discount"),
+    this.detailDiscount = const Route(name: "detail_discount", path: "/detail_discount"),
+
+    this.detailSale = const Route(name: "detail_sale", path: "/detail_sale"),
+    this.detailPayment = const Route(name: "detail_payment", path: "/detail_payment"),
 
   });
 }

@@ -13,7 +13,7 @@ class FormHeader extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-        backgroundColor: const Color.fromARGB(255, 247, 247, 247),
+        backgroundColor: Colors.white,
         title: Text(
           title, 
           style: const TextStyle(color: Color.fromARGB(255, 74, 74, 74), fontWeight: FontWeight.bold, fontSize: 16)
@@ -27,7 +27,7 @@ class FormHeader extends StatelessWidget implements PreferredSizeWidget {
             child: Row(
               children: [
                 TouchableOpacity(
-                  onPress: () => rootNavigatorKey.currentState?.pop(),
+                  onPress: () => rootNavigatorKey.currentState?.pop(true),
                   child: const Icon(
                     Icons.close, 
                     color: Color.fromARGB(255, 74, 74, 74),

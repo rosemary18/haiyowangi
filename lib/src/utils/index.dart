@@ -17,3 +17,12 @@ String generateRandomString(int length, {bool numsOnly = false}) {
     return _chars.codeUnitAt(_rnd.nextInt(_chars.length));
   }));
 }
+
+String formatDouble(double value) {
+
+  if (value == value.toInt()) {
+    return value.toInt().toString();
+  } else {
+    return value.toString();
+  }
+}

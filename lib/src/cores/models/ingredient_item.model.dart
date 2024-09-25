@@ -1,13 +1,18 @@
+import 'package:haiyowangi/src/index.dart';
+
 class IngredientItemModel {
 
   final int id;
   final int? productId;
   final int? variantId;
   final int? ingredientId;
-  final double? qty;
+  double? qty;
   final int? unitId;
   final String? createdAt;
   final String? updatedAt;
+  ProductModel? product;
+  VariantModel? variant;
+  IngredientModel? ingredient;
 
   IngredientItemModel({
     required this.id,
@@ -18,6 +23,9 @@ class IngredientItemModel {
     this.unitId,
     this.createdAt = "",
     this.updatedAt = "",
+    this.product,
+    this.variant,
+    this.ingredient
   });
 
   factory IngredientItemModel.fromJson(Map<String, dynamic> json) {
@@ -26,10 +34,13 @@ class IngredientItemModel {
       productId: json["product_id"],
       variantId: json["variant_id"],
       ingredientId: json["ingredient_id"],
-      qty: json["qty"] ?? 0,
+      qty: double.parse(json["qty"].toString()),
       unitId: json["unit_id"],
       createdAt: json["created_at"] ?? "",
       updatedAt: json["updated_at"] ?? "",
+      product: (json["product"] != null) ? ProductModel.fromJson(json["product"]) : null,
+      variant: (json["variant"] != null) ? VariantModel.fromJson(json["variant"]) : null,
+      ingredient: (json["ingredient"] != null) ? IngredientModel.fromJson(json["ingredient"]) : null
     );
   }
 
@@ -42,7 +53,10 @@ class IngredientItemModel {
       "qty": qty,
       "unit_id": unitId,
       "created_at": createdAt,
-      "updated_at": updatedAt
+      "updated_at": updatedAt,
+      "product": product?.toJson(),
+      "variant": variant?.toJson(),
+      "ingredient": ingredient?.toJson()
     };
   }
 

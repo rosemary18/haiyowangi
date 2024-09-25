@@ -44,8 +44,7 @@ class DRoute {
     this.routes = const [
       IDRoute(
         name: "dashboard", 
-        title: "Beranda",
-        icon: Boxicons.bx_sidebar,
+        title: "✨  Insight",
         routePath: "/dashboard"
       ),
       IDRouteGroup(
@@ -54,6 +53,7 @@ class DRoute {
         icon: Boxicons.bxs_package,
         routes: [
           IDRoute(name: "product", title: "Produk", routePath: "/product"),
+          IDRoute(name: "ingredient", title: "Bahan", routePath: "/ingredient"),
           IDRoute(name: "packet", title: "Paket", routePath: "/packet"),
         ]
       ),
@@ -80,7 +80,7 @@ class DRoute {
         icon: Boxicons.bx_shopping_bag,
         routes: [
           IDRoute(name: "sales", title: "Penjualan", routePath: "/sales"),
-          IDRoute(name: "payment", title: "Pembayaran", routePath: "/payment")
+          // IDRoute(name: "payment", title: "Pembayaran", routePath: "/payment")
         ]
       ),
       IDRouteGroup(

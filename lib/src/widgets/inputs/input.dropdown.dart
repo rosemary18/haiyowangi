@@ -36,7 +36,7 @@ class _InputDropDownState extends State<InputDropDown> {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          if (widget.title.isNotEmpty) Text(widget.title, style: const TextStyle(color: blackColor, fontSize: 14, fontFamily: FontMedium)),
+          if (widget.title.isNotEmpty) Text(widget.title, style: const TextStyle(color: blackColor, fontSize: 12, fontFamily: FontMedium)),
           Container(
             margin: widget.title.isEmpty ? EdgeInsets.zero : const EdgeInsets.only(top: 4),
             child: CustomDropdown(
@@ -45,9 +45,10 @@ class _InputDropDownState extends State<InputDropDown> {
               initialItem: widget.initialValue,
               listItemPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
               decoration: CustomDropdownDecoration(
-                closedFillColor: const Color(0xFFEEEEEE),
+                closedFillColor: const Color.fromARGB(59, 238, 238, 238),
                 closedBorderRadius: BorderRadius.circular(4),
                 expandedBorderRadius: BorderRadius.circular(4),
+                closedBorder: Border.all(color: greySoftColor, width: 1),
                 headerStyle: const TextStyle(fontSize: 14, color: blackColor),
                 hintStyle: const TextStyle(color: Color(0xFF767676)),
                 listItemStyle: const TextStyle(fontSize: 14)

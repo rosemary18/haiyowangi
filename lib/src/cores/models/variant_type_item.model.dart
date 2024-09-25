@@ -1,12 +1,12 @@
 class VariantTypeItemModel {
   
-  final int id;
-  final String? name;
+  final int? id;
+  String? name;
   final int? variantTypeId;
   final String? createdAt;
 
   VariantTypeItemModel({
-    required this.id,
+    this.id,
     this.name = "",
     this.variantTypeId,
     this.createdAt = "",

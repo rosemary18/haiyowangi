@@ -26,3 +26,4 @@ export 'variant_item.model.dart';
 export 'variant_type_item.model.dart';
 export 'variant_type.model.dart';
 export 'variant.model.dart';
+export 'insight.model.dart';

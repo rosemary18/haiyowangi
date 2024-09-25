@@ -55,7 +55,7 @@ class _FormOfficeInventoryViewState extends State<FormOfficeInventoryView> {
     final data = {
       "store_id": context.read<AuthBloc>().state.store?.id,
       "name": _controllerName.text,
-      "price": parseFromInput(_controllerPrice.text),
+      "price": parsePriceFromInput(_controllerPrice.text),
       "buy_date": _controllerBuyDate.text,
       "qty": _controllerQty.text,
     };

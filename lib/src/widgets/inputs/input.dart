@@ -31,6 +31,9 @@ class Input extends StatefulWidget {
   final List<String> suggestions;
   final FocusNode? focusNode;
   final Widget? suffixIcon;
+  final double? width;
+  final double? height;
+  final void Function(String)? onSubmitted;
 
   const Input({
     super.key,
@@ -54,7 +57,10 @@ class Input extends StatefulWidget {
     this.descBuilder,
     this.multiplication = false,
     this.suggestions = const [],
-    this.suffixIcon
+    this.suffixIcon,
+    this.onSubmitted,
+    this.width,
+    this.height
   });
 
   @override
@@ -79,7 +85,7 @@ class _InputState extends State<Input> {
         formatCurrency();
       }
     }
-    if (widget.multiplication && widget.initialValue.isEmpty && widget.controller!.text.isEmpty) {
+    if (widget.multiplication && widget.initialValue.isEmpty && (widget.controller != null && widget.controller!.text.isEmpty)) {
       widget.controller?.text = "0";
     }
   }
@@ -110,7 +116,7 @@ class _InputState extends State<Input> {
       return;
     }
     double parsed = double.parse(text);
-    double value = max((plus ? parsed + 1 : parsed - 1), 0);
+    double value = plus ? parsed + 1 : max(parsed - 1, 0);
     widget.controller?.text = value.toString();
   }
 
@@ -156,25 +162,41 @@ class _InputState extends State<Input> {
     );
   }
 
-   @override
+  @override
+  void didUpdateWidget(covariant Input oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.isCurrency == false && widget.isCurrency) {
+      formatCurrency();
+      widget.controller?.addListener(formatCurrency);
+    } else if (oldWidget.isCurrency && widget.isCurrency == false) {
+      widget.controller?.removeListener(formatCurrency);
+      if (widget.multiplication) {
+        var t = widget.controller!.text.split(".")[0].replaceAll(RegExp(r'[^\d]'), '');
+        widget.controller?.text = t;
+      }
+    }
+  }
+
+  @override
   void dispose() {
     if (widget.isCurrency) widget.controller!.removeListener(formatCurrency);
     super.dispose();
   }
-
 
   @override
   Widget build(BuildContext context) {
 
     return Container(
       margin: widget.margin,
+      width: widget.width,
+      height: widget.height,
       clipBehavior: Clip.none,
       decoration: const BoxDecoration(),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          if (widget.title.isNotEmpty) Text(widget.title, style: const TextStyle(color: blackColor, fontSize: 14, fontFamily: FontMedium)),
+          if (widget.title.isNotEmpty) Text(widget.title, style: const TextStyle(color: blackColor, fontSize: 12, fontFamily: FontMedium)),
           Container(
             clipBehavior: Clip.none,
             decoration: const BoxDecoration(),
@@ -240,6 +262,9 @@ class _InputState extends State<Input> {
                   fieldViewBuilder: (BuildContext context, TextEditingController controller, FocusNode fn, VoidCallback onFieldSubmitted) {
 
                     if (widget.suggestions.isNotEmpty) {
+                      if (widget.controller!.text.isNotEmpty && widget.suggestions.isNotEmpty && focusNode.hasFocus) {
+                        fn.requestFocus();
+                      }
                       if (controller.text.isEmpty) {
                         controller.text = widget.controller!.text;
                       }
@@ -260,14 +285,14 @@ class _InputState extends State<Input> {
                         contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
                         hintText: widget.placeholder,
                         hintStyle: const TextStyle(color: Color(0xFF767676)),
-                        fillColor: const Color(0xFFEEEEEE),
+                        fillColor: const Color.fromARGB(59, 238, 238, 238),
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(4.0),
-                          borderSide: const BorderSide(width: 0, style: BorderStyle.none),
+                          borderSide: const BorderSide(color: greySoftColor, width: 1),
                         ),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(4.0),
-                          borderSide: const BorderSide(width: 0, style: BorderStyle.none),
+                          borderSide: const BorderSide(color: greySoftColor, width: 1),
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(4.0),
@@ -285,6 +310,7 @@ class _InputState extends State<Input> {
                       maxLength: widget.maxCharacter,
                       maxLengthEnforcement: MaxLengthEnforcement.enforced,
                       keyboardType: (widget.isCurrency || widget.multiplication) ? TextInputType.number : TextInputType.text,
+                      onSubmitted: widget.onSubmitted,
                     );
                   },
                   optionsViewOpenDirection: OptionsViewOpenDirection.down,

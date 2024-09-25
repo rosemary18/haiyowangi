@@ -1,15 +1,19 @@
+import 'package:haiyowangi/src/index.dart';
+
 class VariantTypeModel { 
 
-  final int id;
+  final int? id;
   final int? productId;
-  final String? name;
+  String? name;
   final String? createdAt;
+  List<VariantTypeItemModel> variants;
 
   VariantTypeModel({
-    required this.id,
+    this.id,
     this.productId,
     this.name = "",
     this.createdAt = "",
+    this.variants = const [],
   });
 
   factory VariantTypeModel.fromJson(Map<String, dynamic> json) {
@@ -18,6 +22,7 @@ class VariantTypeModel {
       productId: json["product_id"],
       name: json["name"] ?? "",
       createdAt: json["created_at"] ?? "",
+      variants: json["variants"] == null ? [] : List<VariantTypeItemModel>.from(json["variants"].map((x) => VariantTypeItemModel.fromJson(x))),
     );
   }
 
@@ -26,7 +31,8 @@ class VariantTypeModel {
       "id": id,
       "product_id": productId,
       "name": name,
-      "created_at": createdAt
+      "created_at": createdAt,
+      "variants": variants
     };
   }
   

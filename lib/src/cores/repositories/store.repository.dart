@@ -6,6 +6,13 @@ import 'package:haiyowangi/src/index.dart';
 
 class StoreRepository {
 
+  Future<Response> getAllStores() async {
+    
+    String url = "/store";
+    Response response = await getFetch(url);
+    return response;
+  }
+  
   Future<Response> getStores(String id) async {
     
     String url = "/store/user/$id";
@@ -42,6 +49,15 @@ class StoreRepository {
     
     String url = "/store/$id/update-photo";
     Response response = await putFetch(url, data: data, options: Options(headers: {"Content-Type": "multipart/form-data"}));
+
+    if (response.statusCode != 200) {
+      scaffoldMessengerKey.currentState?.showSnackBar(
+        SnackBar(
+          content: Text(response.data["message"]! ?? response.statusMessage!),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
     
     return response;
   }

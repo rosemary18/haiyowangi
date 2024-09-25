@@ -34,23 +34,26 @@ class _LoginViewState extends State<LoginView> {
           title: const Text('Lupa Password', style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 16)),
           titlePadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
           contentPadding: const EdgeInsets.symmetric(horizontal: 16),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Padding(
-                padding: EdgeInsets.only(bottom: 12), 
-                child: Text(
-                  'Masukkan alamat email dibawah ini dan sistem akan mengirimkan link reset password untuk mengatur ulang kata sandi anda.', 
-                  style: TextStyle(color: Colors.black, fontSize: 14)
+          content: SizedBox(
+            width: MediaQuery.of(context).size.width*.75,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Padding(
+                  padding: EdgeInsets.only(bottom: 12), 
+                  child: Text(
+                    'Masukkan alamat email dibawah ini dan sistem akan mengirimkan link reset password untuk mengatur ulang kata sandi anda.', 
+                    style: TextStyle(color: Colors.black, fontSize: 14)
+                  ),
                 ),
-              ),
-              Input(
-                controller: _emailResetPasswordController,
-                placeholder: "Email",
-                maxCharacter: 50,
-              ),
-            ],
+                Input(
+                  controller: _emailResetPasswordController,
+                  placeholder: "Email",
+                  maxCharacter: 50,
+                ),
+              ],
+            )
           ),
           backgroundColor: Colors.white,
           surfaceTintColor: Colors.white,

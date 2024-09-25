@@ -81,7 +81,7 @@ class _DetailIncomeViewState extends State<DetailIncomeView> {
 
   Future<void> handlerUpdate() async {
 
-    if (_controllerTag.text.isEmpty || _controllerName.text.isEmpty || _controllerDate.text.isEmpty || _controllerDescription.text.isEmpty || _controllerNominal.text.isEmpty) {
+    if (_controllerTag.text.isEmpty && _controllerName.text.isEmpty && _controllerDate.text.isEmpty && _controllerDescription.text.isEmpty && _controllerNominal.text.isEmpty) {
       scaffoldMessengerKey.currentState?.showSnackBar(
         const SnackBar(
           content: Text("Lengkapi data terlebih dahulu"),
@@ -104,7 +104,7 @@ class _DetailIncomeViewState extends State<DetailIncomeView> {
     final data = {
       "tag": _controllerTag.text,
       "name": _controllerName.text,
-      "nominal": parseFromInput(_controllerNominal.text),
+      "nominal": parsePriceFromInput(_controllerNominal.text),
       "date": _controllerDate.text,
       "description": _controllerDescription.text,
     };
@@ -308,7 +308,7 @@ class _DetailIncomeViewState extends State<DetailIncomeView> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                const Text("Terakhir diubah pada", style: TextStyle(fontSize: 12, color: greyTextColor)),
+                                const Text("Terakhir diubah", style: TextStyle(fontSize: 12, color: greyTextColor)),
                                 Text(formatDateFromString(_income.updatedAt ?? ""), style: const TextStyle(fontSize: 12)),
                               ],
                             ),

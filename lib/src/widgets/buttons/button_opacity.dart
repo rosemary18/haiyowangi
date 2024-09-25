@@ -31,7 +31,7 @@ class _TouchableOpacityState extends State<TouchableOpacity> {
       onPointerDown: widget.disabled ? null : (event) => setState(() => _co = widget.activeOpacity),
       onPointerUp: widget.disabled ? null : (event) => setState(() => _co = 1.0),
       child: GestureDetector(
-        onTap: widget.onPress,
+        onTap: widget.disabled ? null : widget.onPress,
         child: AnimatedOpacity(
           opacity: _co,
           duration: const Duration(milliseconds: 200),

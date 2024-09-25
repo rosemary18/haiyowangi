@@ -7,7 +7,7 @@ class PaymentModel {
   final String? receiverAccountBank;
   final String? receiverAccountNumber;
   final String? img;
-  final double? nominal;
+  final int? nominal;
   final String? createdAt;
   final String? updatedAt;
 

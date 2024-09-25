@@ -14,7 +14,7 @@ String parseRupiahCurrency (String value, {int digits = 0}) {
   return formattted;
 }
 
-String parseFromInput(String value) {
+String parsePriceFromInput(String value) {
 
   return value.replaceAll(RegExp(r'[^\d]'), '');
 }

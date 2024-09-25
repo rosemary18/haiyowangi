@@ -1,3 +1,5 @@
+import 'package:haiyowangi/src/index.dart';
+
 class DiscountModel {
 
   final int id;
@@ -17,6 +19,9 @@ class DiscountModel {
   final int? storeId;
   final String? createdAt;
   final String? updatedAt;
+  final ProductModel? product;
+  final VariantModel? variant;
+  final PacketModel? packet;
 
   DiscountModel({
     required this.id,
@@ -36,6 +41,9 @@ class DiscountModel {
     this.storeId,
     this.createdAt = "",
     this.updatedAt = "",
+    this.product,
+    this.variant,
+    this.packet
   });
 
   factory DiscountModel.fromJson(Map<String, dynamic> json) {
@@ -43,20 +51,23 @@ class DiscountModel {
       id: json["id"],
       name: json["name"] ?? "",
       code: json["code"] ?? "",
-      nominal: json["nominal"] ?? 0,
-      percentage: json["percentage"] ?? 0,
+      nominal: double.parse(json["nominal"].toString()),
+      percentage: double.parse(json["percentage"].toString()),
       isPercentage: json["is_percentage"] ?? false,
       dateValid: json["date_valid"] ?? "",
       validUntil: json["valid_until"] ?? "",
       multiplication: json["multiplication"] ?? 0,
-      maxItemsQty: json["max_items_qty"] ?? 0,
-      minItemsQty: json["min_items_qty"] ?? 0,
+      maxItemsQty: double.parse(json["max_items_qty"].toString()),
+      minItemsQty: double.parse(json["min_items_qty"].toString()),
       specialForProductId: json["special_for_product_id"],
       specialForVariantId: json["special_for_variant_id"],
       specialForPacketId: json["special_for_packet_id"],
       storeId: json["store_id"],
       createdAt: json["created_at"] ?? "",
       updatedAt: json["updated_at"] ?? "",
+      product: json["product"] != null ? ProductModel.fromJson(json["product"]) : null,
+      variant: json["variant"] != null ? VariantModel.fromJson(json["variant"]) : null,
+      packet: json["packet"] != null ? PacketModel.fromJson(json["packet"]) : null
     );
   }
 
@@ -78,7 +89,10 @@ class DiscountModel {
       "special_for_packet_id": specialForPacketId,
       "store_id": storeId,
       "created_at": createdAt,
-      "updated_at": updatedAt
+      "updated_at": updatedAt,
+      "product": product?.toJson(),
+      "variant": variant?.toJson(),
+      "packet": packet?.toJson()
     }; 
   }
 

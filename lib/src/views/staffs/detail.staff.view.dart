@@ -1,8 +1,11 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:haiyowangi/src/index.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:validators/validators.dart';
 
 class DetailStaffView extends StatefulWidget {
@@ -33,6 +36,8 @@ class _DetailStaffViewState extends State<DetailStaffView> {
 
   bool isEditing = false;
   bool isCashier = false;
+  bool uploadingImage = false;
+  File? _image;
 
 
   @override
@@ -110,7 +115,7 @@ class _DetailStaffViewState extends State<DetailStaffView> {
       "name": _controllerName.text,
       "email": _controllerEmail.text,
       "phone": _controllerPhone.text.replaceAll("-", ""),
-      "salary": parseFromInput(_controllerSalary.text),
+      "salary": parsePriceFromInput(_controllerSalary.text),
       "date_joined": _controllerDateJoined.text,
       "pos_passcode": _controllerPOSPassCode.text,
       "address": _controllerAddress.text,
@@ -142,6 +147,56 @@ class _DetailStaffViewState extends State<DetailStaffView> {
         )
       );
       Navigator.pop(context, true);
+    }
+  }
+
+  Future<void> handlerUpdateStaffImage() async {
+
+    setState(() {
+      uploadingImage = true;
+    });
+
+    FormData formData = FormData.fromMap({
+      "file": await MultipartFile.fromFile(_image!.path, filename: "image.png"),
+    });
+
+    Response response = await repository.uploadImage("${_staff.id}", formData);
+
+    if (response.statusCode == 200) {
+      _staff = StaffModel.fromJson(response.data["data"]);
+      scaffoldMessengerKey.currentState?.showSnackBar(
+        const SnackBar(
+          content: Text("Gambar berhasil diubah!"),
+          backgroundColor: Colors.green,
+        ),
+      );
+    } else {
+      scaffoldMessengerKey.currentState?.showSnackBar(
+        SnackBar(
+          content: Text(response.data["message"]! ?? response.statusMessage!),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+
+    setState(() {
+      _image = null;
+      uploadingImage = false;
+    });
+  }
+
+  Future<void> _pickImage() async {
+
+    if (uploadingImage) return;
+
+    final picker = ImagePicker();
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+
+    if (pickedFile != null) {
+      setState(() {
+        _image = File(pickedFile.path);
+      });
+      await handlerUpdateStaffImage();
     }
   }
 
@@ -228,163 +283,240 @@ class _DetailStaffViewState extends State<DetailStaffView> {
                 height: double.infinity,
                 width: double.infinity,
                 color: Colors.white,
-                padding: const EdgeInsets.all(16),
                 child: SingleChildScrollView(
-                  child: (isEditing) ? Column(
-                    children: [
-                      Input(
-                        controller: _controllerName,
-                        title: "Nama",
-                        margin: const EdgeInsets.only(bottom: 6),
-                      ),
-                      Input(
-                        controller: _controllerEmail,
-                        title: "Email",
-                        margin: const EdgeInsets.only(bottom: 6),
-                      ),
-                      InputPhone(
-                        controller: _controllerPhone,
-                        title: "Nomor Telepon",
-                        margin: const EdgeInsets.only(bottom: 12),
-                      ),
-                      Input(
-                        controller: _controllerAddress,
-                        title: "Alamat",
-                        maxLines: 10,
-                        margin: const EdgeInsets.only(bottom: 12),
-                      ),
-                      Container(
-                        margin: const EdgeInsets.symmetric(vertical: 12),
-                        child: const Divider(color: greyLightColor),
-                      ),
-                      Input(
-                        controller: _controllerSalary,
-                        isCurrency: true,
-                        title: "Gaji",
-                        margin: const EdgeInsets.only(bottom: 6),
-                      ),
-                      InputDate(
-                        controller: _controllerDateJoined,
-                        title: "Tanggal Bergabung",
-                        margin: const EdgeInsets.only(bottom: 6),
-                      ),
-                      SwitchLabel(
-                        title: "Kasir?",
-                        desc: "Staff bertugas sebagai kasir",
-                        value: isCashier, 
-                        onChanged: (e) => setState(() => isCashier = e),
-                      ),
-                      if (isCashier) Input(
-                        controller: _controllerPOSPassCode,
-                        title: "POS Kode",
-                        readOnly: true,
-                        margin: const EdgeInsets.only(bottom: 12),
-                        suffixIcon: TouchableOpacity(
-                          onPress: () {
-                            setState(() {
-                              _controllerPOSPassCode.text = generateRandomString(6, numsOnly: true).toString();
-                            });
-                          },
-                          child: const Icon(Icons.replay, color: greyDarkColor),
+                  child: (isEditing) ? Container(
+                    margin: const EdgeInsets.all(16),
+                    child: Column(
+                      children: [
+                        Input(
+                          controller: _controllerName,
+                          title: "Nama",
+                          margin: const EdgeInsets.only(bottom: 6),
                         ),
-                      ),
-                    ],
+                        Input(
+                          controller: _controllerEmail,
+                          title: "Email",
+                          margin: const EdgeInsets.only(bottom: 6),
+                        ),
+                        InputPhone(
+                          controller: _controllerPhone,
+                          title: "Nomor Telepon",
+                          margin: const EdgeInsets.only(bottom: 12),
+                        ),
+                        Input(
+                          controller: _controllerAddress,
+                          title: "Alamat",
+                          maxLines: 10,
+                          margin: const EdgeInsets.only(bottom: 12),
+                        ),
+                        Container(
+                          margin: const EdgeInsets.symmetric(vertical: 12),
+                          child: const Divider(color: greyLightColor),
+                        ),
+                        Input(
+                          controller: _controllerSalary,
+                          isCurrency: true,
+                          title: "Gaji",
+                          margin: const EdgeInsets.only(bottom: 6),
+                        ),
+                        InputDate(
+                          controller: _controllerDateJoined,
+                          title: "Tanggal Bergabung",
+                          margin: const EdgeInsets.only(bottom: 6),
+                        ),
+                        SwitchLabel(
+                          title: "Kasir?",
+                          desc: "Staff bertugas sebagai kasir",
+                          value: isCashier, 
+                          onChanged: (e) => setState(() => isCashier = e),
+                        ),
+                        if (isCashier) Input(
+                          controller: _controllerPOSPassCode,
+                          title: "POS Kode",
+                          readOnly: true,
+                          margin: const EdgeInsets.only(bottom: 12),
+                          suffixIcon: TouchableOpacity(
+                            onPress: () {
+                              setState(() {
+                                _controllerPOSPassCode.text = generateRandomString(6, numsOnly: true).toString();
+                              });
+                            },
+                            child: const Icon(Icons.replay, color: greyDarkColor),
+                          ),
+                        ),
+                      ],
+                    ),
                   ) : Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(_staff.code ?? "-", style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
-                        ],
-                      ),
-                      const SizedBox(height: 8),
                       Container(
-                        decoration: BoxDecoration(
-                          color: white1Color,
-                          borderRadius: BorderRadius.circular(4),
-                        ),
-                        padding: const EdgeInsets.all(8),
-                        margin: const EdgeInsets.only(top: 6),
-                        child: Column(
+                        color: primaryColor,
+                        height: 120,
+                      ),
+                      Container(
+                        margin: const EdgeInsets.only(bottom: 16, top: 16, left: 16, right: 16),
+                        clipBehavior: Clip.none,
+                        child: Stack(
+                          clipBehavior: Clip.none,
                           children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.start,
                               children: [
-                                const Text("Nama", style: TextStyle(fontSize: 12, color: greyTextColor)),
-                                Text(_staff.name.toString(), style: const TextStyle(fontSize: 12))
+                                Container(
+                                  decoration: BoxDecoration(
+                                    color: white1Color,
+                                    borderRadius: BorderRadius.circular(4),
+                                  ),
+                                  padding: const EdgeInsets.all(8),
+                                  margin: const EdgeInsets.only(top: 92),
+                                  child: Column(
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          const Text("Kode Staff", style: TextStyle(fontSize: 12, color: greyTextColor)),
+                                          Text(_staff.code.toString(), style: const TextStyle(fontSize: 12))
+                                        ],
+                                      ),
+                                      const Divider(color: greyLightColor),
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          const Text("Email", style: TextStyle(fontSize: 12, color: greyTextColor)),
+                                          Text(_staff.email.toString(), style: const TextStyle(fontSize: 12))
+                                        ],
+                                      ),
+                                      const Divider(color: greyLightColor),
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          const Text("Nomor Telepon", style: TextStyle(fontSize: 12, color: greyTextColor)),
+                                          Text(_staff.phone!.isNotEmpty ? "0${_staff.phone.toString()}" : "-", style: const TextStyle(fontSize: 12))
+                                        ],
+                                      ),
+                                      const Divider(color: greyLightColor),
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          const Text("Gaji", style: TextStyle(fontSize: 12, color: greyTextColor)),
+                                          Text(parseRupiahCurrency(_staff.salary.toString()), style: const TextStyle(fontSize: 12))
+                                        ],
+                                      ),
+                                      const Divider(color: greyLightColor),
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          const Text("Tanggal Bergabung", style: TextStyle(fontSize: 12, color: greyTextColor)),
+                                          Text(formatDateFromString("${_staff.dateJoined}", format: "EEEE, dd/MM/yyyy"), style: const TextStyle(fontSize: 12))
+                                        ],
+                                      ),
+                                      const Divider(color: greyLightColor),
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          const Text("Terakhir diubah", style: TextStyle(fontSize: 12, color: greyTextColor)),
+                                          Text(formatDateFromString(_staff.updatedAt ?? ""), style: const TextStyle(fontSize: 12)),
+                                        ],
+                                      ),
+                                      const Divider(color: greyLightColor),
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          const Text("Dibuat pada", style: TextStyle(fontSize: 12, color: greyTextColor)),
+                                          Text(formatDateFromString(_staff.createdAt ?? ""), style: const TextStyle(fontSize: 12)),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                const SizedBox(height: 12),
+                                const Text("Alamat", style: TextStyle(fontSize: 12, fontFamily: FontMedium)),
+                                const SizedBox(height: 4),
+                                Text("${_staff.address!.isNotEmpty ? _staff.address : "-"}", style: const TextStyle(fontSize: 10, color: greyTextColor)),
+                                const SizedBox(height: 12),
+                                const Text("Akses Kasir", style: TextStyle(fontSize: 12, fontFamily: FontMedium)),
+                                const SizedBox(height: 4),
+                                Text(_staff.isCashier == true ? "Ya" : "Tidak", style: const TextStyle(fontSize: 10, color: greyTextColor)),
+                                if (_staff.isCashier == true) Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const SizedBox(height: 12),
+                                    const Text("Kode Pass", style: TextStyle(fontSize: 12, fontFamily: FontMedium)),
+                                    const SizedBox(height: 4),
+                                    Text(_staff.posPasscode.toString(), style: const TextStyle(fontSize: 10, color: greyTextColor))
+                                  ],
+                                ),
                               ],
                             ),
-                            const Divider(color: greyLightColor),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                const Text("Email", style: TextStyle(fontSize: 12, color: greyTextColor)),
-                                Text(_staff.email.toString(), style: const TextStyle(fontSize: 12))
-                              ],
-                            ),
-                            const Divider(color: greyLightColor),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                const Text("Nomor Telepon", style: TextStyle(fontSize: 12, color: greyTextColor)),
-                                Text(_staff.phone.toString(), style: const TextStyle(fontSize: 12))
-                              ],
-                            ),
-                            const Divider(color: greyLightColor),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                const Text("Gaji", style: TextStyle(fontSize: 12, color: greyTextColor)),
-                                Text(parseRupiahCurrency(_staff.salary.toString()), style: const TextStyle(fontSize: 12))
-                              ],
-                            ),
-                            const Divider(color: greyLightColor),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                const Text("Tanggal Bergabung", style: TextStyle(fontSize: 12, color: greyTextColor)),
-                                Text(formatDateFromString("${_staff.dateJoined}", format: "EEEE, dd/MM/yyyy"), style: const TextStyle(fontSize: 12))
-                              ],
-                            ),
-                            const Divider(color: greyLightColor),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                const Text("Terakhir diubah pada", style: TextStyle(fontSize: 12, color: greyTextColor)),
-                                Text(formatDateFromString(_staff.updatedAt ?? ""), style: const TextStyle(fontSize: 12)),
-                              ],
-                            ),
-                            const Divider(color: greyLightColor),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                const Text("Dibuat pada", style: TextStyle(fontSize: 12, color: greyTextColor)),
-                                Text(formatDateFromString(_staff.createdAt ?? ""), style: const TextStyle(fontSize: 12)),
-                              ],
+                            Positioned(
+                              top: -80,
+                              left: 0,
+                              right: 0,
+                              child: Align(
+                                alignment: Alignment.topCenter,
+                                child: TouchableOpacity(
+                                  onPress: _pickImage,
+                                  child: Column(
+                                    children: [
+                                      Container(
+                                        width: 120,
+                                        height: 120,
+                                        padding: const EdgeInsets.all(8),
+                                        decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius: BorderRadius.circular(100),
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color: Colors.grey.withOpacity(0.2),
+                                              spreadRadius: 2,
+                                              blurRadius: 3,
+                                              offset: const Offset(0, 1),
+                                            ),
+                                          ]
+                                        ),
+                                        child: Container(
+                                          clipBehavior: Clip.hardEdge,
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(100),
+                                          ),
+                                          child: Stack(
+                                            children: [
+                                              (_image != null) ? Image.file(_image!, width: 104, height: 104, fit: BoxFit.cover) 
+                                                : (_staff.profilePhoto!.isNotEmpty) ? Image.network(_staff.profilePhoto!, width: 104, height: 104, fit: BoxFit.cover) 
+                                                : Container(
+                                                height: 104,
+                                                width: 104,
+                                                decoration: BoxDecoration(
+                                                  borderRadius: BorderRadius.circular(100),
+                                                  color: white1Color
+                                                ),
+                                                child: Center(
+                                                  child: Text(_staff.name!.substring(0, 1).toUpperCase(), style: const TextStyle(color: greyDarkColor, fontSize: 52, fontWeight: FontWeight.w400)),
+                                                ),
+                                              ),
+                                              if (uploadingImage) Container(
+                                                color: Colors.black.withOpacity(0.1),
+                                                child: Center(
+                                                  child: LoadingAnimationWidget.threeRotatingDots(color: white1Color, size: 16)
+                                                ),
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                      const SizedBox(height: 12),
+                                      Text("${_staff.name}", style: const TextStyle(fontSize: 12, color: greyTextColor)),
+                                    ]
+                                  ),
+                                ),
+                              ),
                             ),
                           ],
                         ),
-                      ),
-                      const SizedBox(height: 12),
-                      const Text("Alamat", style: TextStyle(fontSize: 12, fontFamily: FontMedium)),
-                      const SizedBox(height: 4),
-                      Text("${_staff.address!.isNotEmpty ? _staff.address : "-"}", style: const TextStyle(fontSize: 10, color: greyTextColor)),
-                      const SizedBox(height: 12),
-                      const Text("Akses Kasir", style: TextStyle(fontSize: 12, fontFamily: FontMedium)),
-                      const SizedBox(height: 4),
-                      Text(_staff.isCashier == true ? "Ya" : "Tidak", style: const TextStyle(fontSize: 10, color: greyTextColor)),
-                      if (_staff.isCashier == true) Column(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const SizedBox(height: 12),
-                          const Text("Kode Pass", style: TextStyle(fontSize: 12, fontFamily: FontMedium)),
-                          const SizedBox(height: 4),
-                          Text(_staff.posPasscode.toString(), style: const TextStyle(fontSize: 10, color: greyTextColor))
-                        ],
-                      ),
+                      )
                     ],
                   ),
                 ),

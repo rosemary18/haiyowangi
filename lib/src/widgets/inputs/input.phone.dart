@@ -32,19 +32,19 @@ class _InputPhoneState extends State<InputPhone> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          if (widget.title.isNotEmpty) Text(widget.title, style: const TextStyle(color: blackColor, fontSize: 14, fontFamily: FontMedium)),
+          if (widget.title.isNotEmpty) Text(widget.title, style: const TextStyle(color: blackColor, fontSize: 12, fontFamily: FontMedium)),
           Container(
-            height: 48,
+            height: 40,
             margin: (widget.title.isNotEmpty) ? const EdgeInsets.only(top: 4) : EdgeInsets.zero,
             child: InternationalPhoneNumberInput(
               onInputChanged: (PhoneNumber number) {},
               onInputValidated: (bool value) {},
               selectorConfig: const SelectorConfig(
                 selectorType: PhoneInputSelectorType.DROPDOWN,
-                setSelectorButtonAsPrefixIcon: true,
+                setSelectorButtonAsPrefixIcon: false,
                 useEmoji: true,
                 trailingSpace: false,
-                leadingPadding: 12
+                leadingPadding: 0,
               ),
               ignoreBlank: false,
               countries: const ["ID"],
@@ -56,23 +56,29 @@ class _InputPhoneState extends State<InputPhone> {
               onSaved: (PhoneNumber number) {},
               inputDecoration: InputDecoration(
                 hintText: widget.placeholder,
-                border: InputBorder.none,
-                contentPadding: const EdgeInsets.symmetric(vertical: 0),
-                fillColor: const Color(0xFFEEEEEE),
+                contentPadding: const EdgeInsets.all(10),
+                fillColor: const Color.fromARGB(59, 238, 238, 238),
                 filled: true,
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(4.0),
-                  borderSide: const BorderSide(width: 0, style: BorderStyle.none),
+                  borderSide: const BorderSide(color: greySoftColor, width: 1),
+                ),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(4.0),
+                  borderSide: const BorderSide(color: greySoftColor, width: 1),
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(4.0),
                   borderSide: const BorderSide(color: primaryColor, width: 1),
                 ),
               ),
+              textAlign: TextAlign.left,
+              textAlignVertical: TextAlignVertical.center,
               initialValue: initialNumber,
-              spaceBetweenSelectorAndTextField: 12,
+              spaceBetweenSelectorAndTextField: 10,
               textStyle: const TextStyle(color: Color.fromARGB(255, 47, 47, 47), fontSize: 14),
               maxLength: 16,
+
             ),
           )
         ],

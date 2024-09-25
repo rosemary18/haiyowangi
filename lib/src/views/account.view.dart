@@ -295,7 +295,7 @@ class _AccountViewState extends State<AccountView> {
                                           crossAxisAlignment: CrossAxisAlignment.start,
                                           children: [
                                             const Text("Nomor Telepon", style: TextStyle(color: blackColor, fontSize: 13, fontFamily: FontMedium)),
-                                            Text("${s.user!.phone}", style: const TextStyle(color: greyTextColor, fontSize: 12, fontWeight: FontWeight.w400)),
+                                            Text("0${s.user!.phone}", style: const TextStyle(color: greyTextColor, fontSize: 12, fontWeight: FontWeight.w400)),
                                           ],
                                         )
                                       ),

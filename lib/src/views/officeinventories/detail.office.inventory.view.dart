@@ -93,7 +93,7 @@ class _DetailOfficeInventoryViewState extends State<DetailOfficeInventoryView> {
 
     final data = {
       "name": _controllerName.text,
-      "price": parseFromInput(_controllerPrice.text),
+      "price": parsePriceFromInput(_controllerPrice.text),
       "buy_date": _controllerBuyDate.text,
       "qty": _controllerQty.text,
     };
@@ -301,7 +301,7 @@ class _DetailOfficeInventoryViewState extends State<DetailOfficeInventoryView> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                const Text("Terakhir diubah pada", style: TextStyle(fontSize: 12, color: greyTextColor)),
+                                const Text("Terakhir diubah", style: TextStyle(fontSize: 12, color: greyTextColor)),
                                 Text(formatDateFromString(_officeInventory.updatedAt ?? ""), style: const TextStyle(fontSize: 12)),
                               ],
                             ),

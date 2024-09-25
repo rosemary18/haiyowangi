@@ -35,9 +35,7 @@ class _DrawerAppState extends State<DrawerApp> {
         width: double.infinity,
         color: Colors.white,
         child: BlocConsumer<AuthBloc, AuthState>(
-          listener: (context, state) {
-            
-          },
+          listener: (context, state) {},
           builder: (context, state) => Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -241,10 +239,11 @@ class _DMenuState extends State<DMenu> {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  if (widget.menu?.icon != null) Icon(widget.menu?.icon, color: (widget.menu is IDRoute && widget.menu.routePath == activePath) ? primaryColor : blackColor),
+                  if (widget.menu?.icon != null) Icon(widget.menu?.icon, size: 20, color: (widget.menu is IDRoute && widget.menu.routePath == activePath) ? primaryColor : blackColor),
+                  if (widget.menu?.icon != null) const SizedBox(width: 8),
                   Expanded(
                     child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8),
+                      padding: const EdgeInsets.only(right: 8),
                       child: Text("${widget.menu?.title!}", style: TextStyle(color: (widget.menu is IDRoute && widget.menu.routePath == activePath) ? primaryColor : blackColor, fontWeight: FontWeight.w500, fontSize: 14)),
                     )
                   ),

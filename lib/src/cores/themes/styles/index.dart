@@ -29,7 +29,7 @@ export 'text_styles.dart';
 // GRAY4 = '#D4D4D4';
 
 const Color primaryColor = Color(0xFF37DAA5);
-const Color white1Color = Color(0xFFF5F5F5);
+const Color white1Color = Color(0xFFF4F4F4);
 const Color greyColor = Color(0xFFEEEEEE);
 const Color greySoftColor = Color(0xFFDCDCDC);
 const Color greyLightColor = Color(0xFFE0E0E0);
@@ -44,8 +44,13 @@ const Color yellowColor = Color(0xFFF59700);
 const Color yellowLightColor = Color(0xFFFEF2E0);
 const Color greenLightColor = Color(0xFFDDFBF3);
 
-const String FontRegular = "BentonSans-Regular";
-const String FontMedium = "BentonSans-Medium";
-const String FontThin = "BentonSans-Thin";
-const String FontBold = "BentonSans-Bold";
-const String FontBlack = "BentonSans-Black";
+const String FontRegular = "Nunito-Regular";
+const String FontMedium = "Nunito-SemiBold";
+const String FontThin = "Nunito-Light";
+const String FontBold = "Nunito-Bold";
+const String FontBlack = "Nunito-Black";
+// const String FontRegular = "BentonSans-Regular";
+// const String FontMedium = "BentonSans-Medium";
+// const String FontThin = "BentonSans-Thin";
+// const String FontBold = "BentonSans-Bold";
+// const String FontBlack = "BentonSans-Black";

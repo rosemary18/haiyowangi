@@ -237,7 +237,7 @@ class _ExpensesViewState extends State<ExpensesView> {
                 ),
                 TouchableOpacity(
                   child: const Icon(
-                    Boxicons.bx_trash_alt,
+                    Boxicons.bxs_trash,
                     color: redColor,
                     size: 14
                   ), 
@@ -289,14 +289,14 @@ class _ExpensesViewState extends State<ExpensesView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: white1Color,
       body: Column(
         children: [
           Expanded(
             child: Container(
               height: double.infinity,
               width: double.infinity,
-              color: Colors.white,
+              color: white1Color,
               child: RefreshIndicator(
                 onRefresh: handlerGetData,
                 child: ListView.builder(
@@ -330,14 +330,14 @@ class _ExpensesViewState extends State<ExpensesView> {
                     height: 40,
                     width: 40,
                     decoration: const BoxDecoration(
-                      color: primaryColor,
+                      color: Colors.green,
                       borderRadius: BorderRadius.all(Radius.circular(100)),
                       boxShadow: [
                         BoxShadow(color: Colors.black12, spreadRadius: 1, blurRadius: 1, offset: Offset(0, 1))
                       ]
                     ),
                     margin: const EdgeInsets.only(left: 12),
-                    child: const Icon(CupertinoIcons.plus, color: Colors.white, size: 24),
+                    child: const Icon(CupertinoIcons.plus, color: Colors.white, size: 20),
                   ),
                 )
               ],

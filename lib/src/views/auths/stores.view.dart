@@ -247,7 +247,7 @@ class _StoresViewState extends State<StoresView> {
                     height: 38,
                     width: 38,
                     decoration: const BoxDecoration(
-                      color: primaryColor,
+                      color: Colors.green,
                       borderRadius: BorderRadius.all(Radius.circular(100)),
                       boxShadow: [
                         BoxShadow(color: Colors.black12, spreadRadius: 1, blurRadius: 1, offset: Offset(0, 1))
@@ -329,7 +329,7 @@ class _StoresViewState extends State<StoresView> {
           height: double.infinity,
           width: double.infinity,
           margin: EdgeInsets.symmetric(horizontal: isTablet ? MediaQuery.of(context).size.width * .25 : 0,),
-          color: Colors.white,
+          color: white1Color,
           child: SafeArea(
             bottom: false,
             child: Column(

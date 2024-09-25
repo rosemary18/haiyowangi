@@ -5,16 +5,18 @@ import 'package:haiyowangi/src/index.dart';
 class DetailHeader extends StatelessWidget implements PreferredSizeWidget {
 
   final String title;
+  final List<Widget>? actions;
 
   const DetailHeader({
     super.key,
     this.title = 'Title',
+    this.actions
   });
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
-        backgroundColor: const Color.fromARGB(255, 247, 247, 247),
+        backgroundColor: Colors.white,
         title: Text(
           title, 
           style: const TextStyle(color: Color.fromARGB(255, 74, 74, 74), fontWeight: FontWeight.bold, fontSize: 16)
@@ -36,6 +38,7 @@ class DetailHeader extends StatelessWidget implements PreferredSizeWidget {
         automaticallyImplyLeading: false,
         titleSpacing: 4,
         leadingWidth: 40,
+        actions: actions,
       );
   }
   

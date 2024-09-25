@@ -65,6 +65,7 @@ class _FormStaffViewState extends State<FormStaffView> {
           backgroundColor: Colors.red,
         )
       );
+      return;
     }
 
     final data = {
@@ -72,7 +73,7 @@ class _FormStaffViewState extends State<FormStaffView> {
       "name": _controllerName.text,
       "email": _controllerEmail.text,
       "phone": _controllerPhone.text.replaceAll("-", ""),
-      "salary": parseFromInput(_controllerSalary.text),
+      "salary": parsePriceFromInput(_controllerSalary.text),
       "date_joined": _controllerDateJoined.text,
       "is_cashier": isCashier,
       "pos_passcode": _controllerPOSPassCode.text,

@@ -5,6 +5,7 @@ import 'package:haiyowangi/src/index.dart';
 
 class InputDate extends StatefulWidget {
   
+  final bool range;
   final EdgeInsets margin;
   final String title;
   final String placeholder;
@@ -18,6 +19,7 @@ class InputDate extends StatefulWidget {
 
   const InputDate({
     super.key,
+    this.range = false,
     this.title = "",
     this.margin = const EdgeInsets.only(bottom: 0),
     this.placeholder = "",
@@ -41,7 +43,7 @@ class _InputDateState extends State<InputDate> {
   @override
   void initState() {
     super.initState();
-    widget.controller?.text = (widget.controller!.text.isNotEmpty ? formatDateFromString(widget.controller!.text, format: "yyyy-MM-dd") : widget.initialValue.isEmpty ? DateTime.now().toLocal().toString().split(' ')[0] : widget.initialValue);
+    widget.controller?.text = (widget.controller!.text.isNotEmpty ? formatDateFromString(widget.controller!.text, format: "yyyy/MM/dd") : widget.initialValue.isEmpty ? formatDateFromString(DateTime.now().toLocal().toString(), format: "yyyy/MM/dd") : widget.initialValue);
     focusNode.addListener(() {
       if (focusNode.hasFocus) {
         handlerPickDate();
@@ -55,19 +57,40 @@ class _InputDateState extends State<InputDate> {
   }
 
   void handlerPickDate() async {
-    DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: widget.controller!.text.isNotEmpty ? DateTime.parse(widget.controller!.text) : DateTime.now(),
-      firstDate: DateTime(2000),
-      lastDate: DateTime(2101),
-      initialDatePickerMode: DatePickerMode.day,
-    );
-    if (picked != null) {
-      setState(() {
-        widget.controller?.text = "${picked.toLocal()}".split(' ')[0];
-      });
+    if (widget.range) {
+      DateTimeRange? picked = await showDateRangePicker(
+        context: context,
+        firstDate: DateTime(2000),
+        lastDate: DateTime(2101),
+        initialDateRange: DateTimeRange(start: DateTime.now(), end: DateTime.now()),
+        initialEntryMode: DatePickerEntryMode.input,
+        helpText: "Pilih Tanggal",
+      );
+      if (picked != null) {
+        setState(() {
+          if (picked.start.isAtSameMomentAs(picked.end)) {
+            widget.controller?.text = formatDateFromString(picked.start.toString(), format: "yyyy/MM/dd");
+          } else {
+            widget.controller?.text = "${formatDateFromString(picked.start.toString(), format: "yyyy/MM/dd")} - ${formatDateFromString(picked.end.toString(), format: "yyyy/MM/dd")}";
+          }
+        });
+      }
+    } else {
+      DateTime? picked = await showDatePicker(
+        context: context,
+        initialDate: widget.controller!.text.isNotEmpty ? DateTime.parse(widget.controller!.text.replaceAll("/", "-")) : DateTime.now(),
+        firstDate: DateTime(2000),
+        lastDate: DateTime(2101),
+        initialDatePickerMode: DatePickerMode.day,
+      );
+      if (picked != null) {
+        setState(() {
+          widget.controller?.text = formatDateFromString(picked.toString(), format: "yyyy/MM/dd");
+        });
+      }
     }
     focusNode.unfocus();
+    widget.onChanged?.call(widget.controller!.text);
   }
 
   @override
@@ -79,7 +102,7 @@ class _InputDateState extends State<InputDate> {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          if (widget.title.isNotEmpty) Text(widget.title, style: const TextStyle(color: blackColor, fontSize: 14, fontFamily: FontMedium)),
+          if (widget.title.isNotEmpty) Text(widget.title, style: const TextStyle(color: blackColor, fontSize: 12, fontFamily: FontMedium)),
           Container(
             height: 54,
             margin: (widget.title.isNotEmpty) ? const EdgeInsets.only(top: 4) : EdgeInsets.zero,
@@ -94,14 +117,14 @@ class _InputDateState extends State<InputDate> {
                 contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
                 hintText: widget.placeholder,
                 hintStyle: const TextStyle(color: Color(0xFF767676)),
-                fillColor: const Color(0xFFEEEEEE),
+                fillColor: const Color.fromARGB(59, 238, 238, 238),
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(4.0),
-                  borderSide: const BorderSide(width: 0, style: BorderStyle.none),
+                  borderSide: const BorderSide(color: greySoftColor, width: 1),
                 ),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(4.0),
-                  borderSide: const BorderSide(width: 0, style: BorderStyle.none),
+                  borderSide: const BorderSide(color: greySoftColor, width: 1),
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(4.0),
