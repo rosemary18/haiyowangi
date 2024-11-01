@@ -60,7 +60,7 @@ class _FormIngredientViewState extends State<FormIngredientView> {
     final data = {
       "store_id": context.read<AuthBloc>().state.store?.id,
       "name": _controllerName.text,
-      "qty": _controllerQty.text,
+      "qty": _controllerQty.text.isEmpty ? 0 : double.parse(_controllerQty.text),
     };
 
     for (var i = 0; i < units.length; i++) {

@@ -255,7 +255,7 @@ class _IncomingsStockViewState extends State<IncomingsStockView> {
                     Text(formatDateFromString("${incomingsStock[index].createdAt}", format: "EEEE, dd/MM/yyyy, HH:mm"), style: const TextStyle(fontSize: 8, color: greyTextColor)),
                   ],
                 ),
-                if (!(incomingsStock[index].status == 1))TouchableOpacity(
+                if (!(incomingsStock[index].status == 1)) TouchableOpacity(
                   child: const Icon(
                     Boxicons.bxs_trash,
                     color: redColor,

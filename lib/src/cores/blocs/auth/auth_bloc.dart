@@ -61,8 +61,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       final token = box.get("refresh_token");
       final storeId = box.get("store_id");
 
-      debugPrint("token: $token, storeId: $storeId");
-
       if (token == null || storeId == null) {
         if (token != null) box.delete("refresh_token");
         if (storeId != null) box.delete("store_id");
@@ -136,7 +134,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         phone: event.phone,
         password: event.password,
         confirmPassword: event.confirmPassword
-      ).whenComplete(() => emit(state.copyWith()));
+      ).whenComplete(() => emit(state.copyWith(isAuthenticated: false)));
     });
 
     on<AuthRequestResetPassword>((event, emit) async {
