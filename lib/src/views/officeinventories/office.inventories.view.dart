@@ -179,7 +179,7 @@ class _OfficeInventoriesViewState extends State<OfficeInventoriesView> {
   Widget viewOfficeInventoryCard(BuildContext context, int index) {
 
     if (!loading && !loadmore && officeInventories.isEmpty) {
-      const SizedBox(
+      return const SizedBox(
         height: 40,
         child: Center(
           child: Text("Inventaris tidak ditemukan!", style: TextStyle(color: greyTextColor, fontSize: 12)),

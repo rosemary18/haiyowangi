@@ -53,7 +53,6 @@ class _StaffsViewState extends State<StaffsView> {
       lastPage = response.data!["data"]!["total_page"];
       total = response.data!["data"]!["total"];
     }
-
     loading = false;
     setState(() {});
   }

@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:dio/io.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
@@ -51,5 +54,12 @@ startUp() async {
 
   await FlutterDownloader.initialize(debug: true);
   await FlutterDownloader.registerCallback(downloadCallBack);
+
+  if (Platform.isAndroid) { 
+    // ignore: deprecated_member_use
+    (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate = (client) { 
+      client.badCertificateCallback = (X509Certificate cert, String host, int port) => true; return client; 
+    }; 
+  }
 
 }
