@@ -139,7 +139,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
     on<AuthRequestResetPassword>((event, emit) async {
       emit(AuthRequestResetPasswordLoading());
-      await authRepository.forgotPassword(email: event.email).whenComplete(() => emit(state.copyWith()));
+      await authRepository.forgotPassword(email: event.email).whenComplete(() => emit(state.copyWith(isAuthenticated: false)));
     });
 
     on<AuthLogout>((event, emit) async {
